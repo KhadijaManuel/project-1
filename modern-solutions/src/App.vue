@@ -1,8 +1,13 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
+        <div class="topnav">
+       <router-link to="/login">Login</router-link>
+       <router-link to="/about">About</router-link>
+       <router-link to="/dashboard">Dashboard</router-link>
+       <router-link to="/employees">Employees</router-link>
+       <router-link to="/payroll">Payroll</router-link>
+       <router-link to="/leave">Leave</router-link>
+        <input type="text" placeholder="Search..">
+    </div>
   <router-view/>
 </template>
 
