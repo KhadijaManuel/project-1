@@ -4,26 +4,49 @@
     <div>
         <h4>Welcome</h4>
     </div>
-
-
-
     <nav>
-   <div class="vertical-menu" sidebar>
-    <a href="#login" class="active">Login</a> <br>
-    <a href="#employee" class="active">Employee Details</a> <br>
-    <a href="#attendance" class="active">Attendance</a> <br>
-    <a href="#leave" class="active">Leave</a> <br>
+    <div class="vertical-menu" sidebar>
+        <a href="#Login" class="active">#Login</a> <br>
+        <a href="#employee" class="active">Employee Details</a> <br>
+        <a href="#attendance" class="active">Attendance</a> <br>
+        <a href="#leave" class="active">Leave</a> <br>
+        <a href="#payroll" class="active">Payroll-</a> <br>
     </div>
+    <CardComp/>
     </nav>
 
-    <div></div>
 </template>
 
 <script>
- 
+import CardComp from '@/components/CardComp.vue';
+
+export default {
+    name: 'DashboardView',
+    components: {
+        CardComp
+    },
+    data() {
+        return {
+           
+        };
+    },
+    methods: {
+        
+    }
+}
+
 </script>
 
 <style>
+.vertical-menu {
+    width: 120px;
+    /* height: 100%; */
+    /* background-color: #f1f1f1; */
+    position: fixed;
+    top : 0;
+    left: 0;
+    padding-top: 20px;
+}
 .topnav {
     overflow: hidden;
     background-color: #333;
@@ -80,4 +103,13 @@ div[sidebar] a {
     height: 5px;
     margin: 6px 0;
 }
+.card, .card-2 {
+    width: 300px;
+    height: 200px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    display: inline-block;
+}   
 </style>
