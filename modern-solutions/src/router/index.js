@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import PayRoll from '@/views/PayRoll.vue'
-import Attendance from '@/views/attendance.vue'
+import Attendance from '@/views/EmployeeAttendance.vue'
 
 const routes = [
   {
