@@ -1,19 +1,9 @@
 <template>
-    <div class="bg-image">
-        <form action="/action_page.php" method="post">
-        <div class="bg-text">
-            <h1>Login Page</h1>
-            <p>Please enter your credentials to login.</p>
-        </div>
-        </form>
-    </div>
-    
-
-    <body>
+     <body>
         <form>
             <div>
-                <label for="username">Username:</label>
-                <input type="text" id="username" placeholder="username" required>
+                <label for="username-Email">User Email:</label>
+                <input type="text" id="user-Email" placeholder="Email" required>
             </div>
             <div>
                 <label for="password">Password:</label>
@@ -26,8 +16,14 @@
            
             
         </form>
-    </body>
+
+
+     </body> 
 </template>
+
+<script>
+ 
+</script>
 
 <style>
 form {
