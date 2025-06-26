@@ -58,7 +58,7 @@ export default {
   methods: {
     async fetchLeaves() {
       try {
-        const response = await fetch('/dummy-data/attendance.json');
+        const response = await fetch('/data/attendance.json');
         const data = await response.json();
 
         const flatLeaves = [];
