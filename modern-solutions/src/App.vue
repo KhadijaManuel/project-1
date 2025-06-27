@@ -1,15 +1,23 @@
 <template>
-        <div class="topnav">
-       <router-link to="/login">Login</router-link>
-       <router-link to="/about">About</router-link>
-       <router-link to="/dashboard">Dashboard</router-link>
-       <router-link to="/employees">Employees</router-link>
-       <router-link to="/payroll">Payroll</router-link>
-       <router-link to="/leave">Leave</router-link>
-        <input type="text" placeholder="Search..">
-    </div>
-  <router-view/>
+  
+  <div class="topnav">
+    <router-link to="/">HomeView</router-link>
+    <router-link to="/about">About</router-link>
+    <router-link to="/dashboard">Dashboard</router-link>
+    <router-link to="/employees">Employee</router-link>
+    <router-link to="/payroll">Payroll</router-link>
+    <router-link to="/leave">Leave</router-link>
+    <router-link to=""></router-link>
+    <input type="text" placeholder="Search..">
+  </div>
+  <router-view />
 </template>
+
+<script>
+
+
+
+</script>
 
 <style>
 #app {
