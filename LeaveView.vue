@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <h2 class="page-title">Leave Management</h2>
-
+    <!-- Filter buttons -->
     <div class="filter-buttons">
         <h3>Filter by Status:</h3>
       <button @click="filterStatus = 'All'">All</button>
@@ -9,13 +9,13 @@
       <button @click="filterStatus = 'Approved'">Approved</button>
       <button @click="filterStatus = 'Denied'">Denied</button>
     </div>
-
+    <!-- Shows filtered leaves -->
     <div class="table-container">
       <LeaveTableView :leaves="filteredLeaves" @delete-leave="deleteLeave" />
     </div>
-
+    <!-- Form to add new leave request -->
     <div class="form-container">
-      <h3 style="text-align: left;">New Leave Request:</h3>
+      <h2 style="text-align: left;">New Leave Request:</h2>
       <form @submit.prevent="addLeave">
         <input v-model="newLeave.employeeName" placeholder="Employee Name" required />
         <input v-model="newLeave.date" type="date" required />
@@ -34,8 +34,11 @@ export default {
   components: { LeaveTableView },
   data() {
     return {
+    // List of leave requests
       leaves: [],
+    // Filter status for leave requests
       filterStatus: 'All',
+    // Object to hold new leave request info
       newLeave: {
         employeeName: '',
         date: '',
@@ -45,6 +48,7 @@ export default {
     };
   },
   computed: {
+    // Filters the leaves based on the selected status
     filteredLeaves() {
       if (this.filterStatus === 'All') return this.leaves;
       return this.leaves.filter(
@@ -53,16 +57,19 @@ export default {
     }
   },
   async mounted() {
+    // Fetches the leave requests when the component is mounted
     await this.fetchLeaves();
   },
   methods: {
+    // Fetches leave requests from the JSON file
     async fetchLeaves() {
       try {
         const response = await fetch('/data/attendance.json');
         const data = await response.json();
 
         const flatLeaves = [];
-
+        // Flattens the leave requests from the nested structure
+        // into a single array for easier management
         data.attendanceAndLeave.forEach((employee) => {
           employee.leaveRequests.forEach((leave, index) => {
             flatLeaves.push({
@@ -82,6 +89,7 @@ export default {
         console.error('Error loading leaves:', error);
       }
     },
+    // Adds a new leave request after validation
     addLeave() {
       // Validation to ensure all fields are filled  
       if (!this.newLeave.employeeName || !this.newLeave.date || !this.newLeave.reason.trim() || !this.newLeave.status.trim()) {
@@ -119,6 +127,7 @@ export default {
             alert('Leave request for this employee on this date already exists.');
             return;
         }
+
       const newId = this.leaves.length
         ? this.leaves[this.leaves.length - 1].employeeId + 1
         : 1;
@@ -135,6 +144,7 @@ export default {
         status: ''
       };
     },
+    // Deletes a leave request after confirmation
     deleteLeave(id) {
       if (confirm(`Are you sure you want to delete this leave request?`)) {
         this.leaves = this.leaves.filter(l => l.id !== id);
@@ -156,21 +166,20 @@ export default {
 .page-title {
   margin-bottom: 0rem;
 }
-
 .filter-buttons {
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
 }
 .filter-buttons button {
   margin-right: 10px;
   padding: 0.5rem 1rem;
-  background-color: rgb(38, 186, 172);
+  background-color: lightseagreen;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 .filter-buttons button:hover {
-  background-color: lightgrey;
+  background-color:rgb(22, 143, 22);
 }
 
 .table-container {
@@ -190,6 +199,9 @@ export default {
   padding: 0.5rem;
   font-size: 1rem;
 }
+.form-container button:hover {
+    background-color:rgb(22, 143, 22);
+}    
 .form-container button {
   padding: 0.5rem;
   background-color: rgb(60, 180, 164);
@@ -197,4 +209,5 @@ export default {
   border: none;
   cursor: pointer;
 }
+
 </style>

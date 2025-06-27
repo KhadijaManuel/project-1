@@ -11,13 +11,15 @@
       </tr>
     </thead>
     <tbody>
+        <!-- Loops through leave requests -->
       <tr v-for="leave in leaves" :key="leave.id">
         <td>{{ leave.employeeId }}</td>
         <td>{{ leave.employeeName }}</td>
         <td>{{ leave.date }}</td>
         <td>{{ leave.reason }}</td>
-        <td>{{ leave.status }}</td>
+        <td :class="['status-cell', leave.status.toLowerCase()]">{{ leave.status }}</td>
         <td>
+            <!-- Button that deletes leave request -->
           <button @click="$emit('delete-leave', leave.id)">Delete</button>
         </td>
       </tr>
@@ -28,6 +30,7 @@
 <script>
 export default {
   props: {
+    // Array of leave requests passed from parent component
     leaves: {
       type: Array,
       required: true
@@ -43,16 +46,15 @@ export default {
   font-family: Arial, sans-serif;
   margin-top: 1rem;
 }
-
 .leave-table th,
 .leave-table td {
-  padding: 10px;
+  padding: 4px;
   border: 1px solid white;
   text-align: left;
 }
 
 .leave-table th {
-  background-color: rgb(60, 180, 164);
+  background-color: lightseagreen;
   color: white;
 }
 
@@ -69,5 +71,17 @@ export default {
 .leave-table tr:hover {
   background-color: whitesmoke;
   transition: background-color 0.3s ease;
+}
+.status-cell.approved {
+  color: green;
+  font-weight: bold;
+}
+.status-cell.pending {
+  color: orange;
+  font-weight: bold;
+}
+.status-cell.denied {
+  color: red;
+  font-weight: bold;
 }
 </style>

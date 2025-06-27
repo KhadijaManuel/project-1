@@ -14,9 +14,9 @@
       </tr>
     </thead>
     <tbody>
+      <!-- Loops through employees -->
       <tr v-for="(employee, index) in employees" :key="employee.id">
         <td>{{ employee.id }}</td>
-        
         <td>
           <input v-if="employee.isEditing" v-model="employee.name" />
           <span v-else>{{ employee.name }}</span>
@@ -46,8 +46,8 @@
           <input v-if="employee.isEditing" v-model="employee.contact" />
           <span v-else>{{ employee.contact }}</span>
         </td>
-
         <td>
+          <!-- Buttons to edit, update, or delete employee -->
           <button style="border: none;" @click="toggleEdit(employee)">
             {{ employee.isEditing ? 'Update' : 'Edit' }}
           </button>
@@ -62,15 +62,18 @@
 <script>
 export default {
   props: {
+    // Receives the list of employees from the parent component
     employees: {
       type: Array,
       required: true
     }
   },
   methods: {
+    // Toggles the editing state of an employee
     toggleEdit(employee) {
       employee.isEditing = !employee.isEditing;
     },
+    // Emits an event to delete an employee
     deleteEmployee(index) {
       this.$emit('delete-employee', index);
     }
@@ -100,7 +103,7 @@ export default {
   color: white;  
 }
 .employee-table td {
-  padding: 10px;
+  padding: 6px;
   border: 1px solid white;
   text-align: left;
 }
@@ -115,6 +118,9 @@ export default {
   width: 100%;
   padding: 5px;
   font-size: 1rem;
+}
+.employee-table button:hover {
+  background-color:rgb(22, 143, 22);
 }
 .employee-table button {
   margin-right: 5px;

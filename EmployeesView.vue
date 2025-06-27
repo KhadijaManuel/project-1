@@ -186,7 +186,7 @@ export default {
   padding: 0rem;
 }
 .page-title {
-  margin-bottom: 0rem;
+  margin-bottom: 1rem;
 }
 .form-container {
   margin-top: 2rem;
@@ -209,7 +209,7 @@ export default {
   cursor: pointer;
 }
 .form-container button:hover {
-  background-color:rgb(47, 197, 47);
+  background-color:rgb(22, 143, 22);
 }
 .form-container input:hover {
   box-shadow: black;
