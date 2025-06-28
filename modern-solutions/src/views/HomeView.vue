@@ -1,31 +1,31 @@
 <template>
     <div class="bg-image">
-        <form action="/action_page.php" method="post">
-            <div class="bg-text">
-                <h1>Login Page</h1>
-                <p>Please enter your credentials to login.</p>
-            </div>
-        </form>
-    </div>
+        <div class="bg-text">
+            <h1>Login</h1>
+            <p>Please enter your credentials to login</p>
+
+        </div>
+    
 
 
-    <body>
-        <form>
+        <form @submit.prevent="handleLogin">
             <div>
-                <label for="username">Username:</label>
+                <label for="userEmail">Username:</label>
                 <input v-model="userEmail" type="text" id="userEmail" placeholder="email" required>
             </div>
             <div>
                 <label for="password">Password:</label>
                 <input v-model="password" type="password" id="password" placeholder="password" required> <br>
                 <br>
-                <button type="submit"><router-link to="/dashboard">Login</router-link></button>
-
+                <div v-if="error.lenth">
+                    <p style="color: black;" v-for="err in error" :key="err">{{ err }}</p>
+                </div>
+                <button type="submit">Login</button>
             </div>
 
 
         </form>
-    </body>
+    </div>
 </template>
 
 <script>
@@ -42,25 +42,15 @@ export default {
     },
 
     methods: {
-        // @ts-ignore
-        validateForm() {
-            const userEmail = document.getElementById('userEmail').value;
-            const password = document.getElementById('password').value;
-        },
-        handleLogin() {
-            // Handle login logic here
+        handleLogin(){
             this.error = [];
-            //authentication logic here 
-            if (!this.userEmail && !this.password) {
-                // Redirect to dashboard or perform successful login actions
+            if (!this.userEmail || !this.password){
                 this.error.push('Please enter your email and password');
-                // Redirect to dashboard or perform successful login actions
-            } else {
-                // Handle login failure
-
-                alert('Login successful');
-                this.$router.push('/dashboard');
+                return;
             }
+
+            alert('Login successful')
+            this.$router.push('/dashboard')
         }
     }
 
