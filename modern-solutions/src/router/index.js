@@ -1,23 +1,48 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import LoginView from '@/views/LoginView.vue'
 import DashboardView  from '@/views/DashboardView.vue'
-
+import LeaveView from '@/views/LeaveView.vue'
+// import Attendance from '@/views/Attendance.vue'
+import PayRoll from '@/views/PayRoll.vue'
+import EmployeesView from '@/views/EmployeesView.vue'
+import EmployeeAttendance from '@/views/EmployeeAttendance.vue'
 const routes = [
   {
     path: '/',
     name: 'home',
     component: HomeView
-  }, {
-    path: '/login',
-    name: 'login',
-    component: LoginView
-  },
-  {
+  // }, {
+  //   path: '/login',
+  //   name: 'login',
+  //   component: LoginView
+  // },
+   }, {
     path: '/dashboard',
     name: 'dashboard',
     component: DashboardView 
   },
+{
+    path: '/leave',
+    name: 'leave',
+    component: LeaveView
+  },
+{
+    path: '/employees',
+    name: 'employees',
+    component: EmployeesView
+},
+  {
+    path: '/attendance',
+    name: 'attendance',
+    component: EmployeeAttendance
+  },
+
+{
+    path: '/payroll',
+    name: 'payroll',
+    component:PayRoll 
+},
+
   {
     path: '/about',
     name: 'about',
