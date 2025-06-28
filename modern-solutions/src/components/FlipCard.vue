@@ -1,159 +1,233 @@
 <template>
-  <div v-if="employee" class="flip-container" @click="isFlipped = !isFlipped">
-    <div class="flipper" :class="{ flipped: isFlipped }">
-      <!-- Front Side -->
-      <div class="front">
-        <div class="avatar">{{ getInitials(employee.employeeName) }}</div>
-        <h3>{{ employee.employeeName }}</h3>
-        <div class="score-display">
-          <span class="score">{{ employee.score }}</span>
-          <span class="max-score">/10</span>
+ <!-- <div class="grid-text-centre">
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h1>John Doe</h1>
+                    <p>Architect & Engineer</p>
+                    <p>We love that guy</p>
+                </div>
+                <div class="flip-card-back">
+                    1
+                </div>
+            </div>
         </div>
-        <p class="department">{{ getDepartment(employee.employeeId) }}</p>
-        <p class="click-hint">Click to view details</p>
-      </div>
 
-      <!-- Back Side -->
-      <div class="back">
-        <h4>Performance Review</h4>
-        <PerformanceChart :score="employee.score" />
-        <div class="review-content">
-          <p class="review-text">"{{ employee.comments }}"</p>
-          <p class="reviewer">- {{ employee.reviewer }}</p>
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h1>Jane Smith</h1>
+                    <p>Designer & Developer</p>
+                    <p>Creative and innovative</p>
+                </div>
+                <div class="flip-card-back">
+                    2
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
+
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h1>Mike Johnson</h1>
+                    <p>Project Manager</p>
+                    <p>Keeps everything organized</p>
+                </div>
+                <div class="flip-card-back">
+                    3
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h1>Sarah Wilson</h1>
+                    <p>UX Designer</p>
+                    <p>User experience expert</p>
+                </div>
+                <div class="flip-card-back">
+                    4
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h1>David Brown</h1>
+                    <p>Data Scientist</p>
+                    <p>Numbers tell stories</p>
+                </div>
+                <div class="flip-card-back">
+                    5
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h1>Lisa Garcia</h1>
+                    <p>Marketing Lead</p>
+                    <p>Spreading the word</p>
+                </div>
+                <div class="flip-card-back">
+                    6
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h1>Chris Lee</h1>
+                    <p>Backend Developer</p>
+                    <p>Server-side specialist</p>
+                </div>
+                <div class="flip-card-back">
+                    7
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h1>Amy Chen</h1>
+                    <p>Quality Assurance</p>
+                    <p>Ensuring perfection</p>
+                </div>
+                <div class="flip-card-back">
+                    8
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h1>Tom Anderson</h1>
+                    <p>DevOps Engineer</p>
+                    <p>Deployment master</p>
+                </div>
+                <div class="flip-card-back">
+                    9
+                </div>
+            </div>
+        </div>
+
+        <div class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front">
+                    <h1>Emma Taylor</h1>
+                    <p>Product Owner</p>
+                    <p>Vision and strategy</p>
+                </div>
+                <div class="flip-card-back">
+                    10
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <EmployeesCards />
+
 </template>
 
 <script>
-import PerformanceChart from './PerformanceChart.vue'
+import EmployeesCards from './EmployeesCards.vue'
 
 export default {
-  components: { PerformanceChart },
-  props: {
-    employee: {
-      type: Object,
-      required: true
-    }
-  },
-  data() {
-    return {
-      isFlipped: false
-    }
-  },
-  methods: {
-    getInitials(name) {
-      return name.split(' ').map(n => n[0]).join('')
-    },
-    getDepartment(id) {
-      const departments = ['Management', 'Sales', 'IT', 'Marketing', 'Finance', 'Design', 'Operations']
-      return departments[id % departments.length]
-    }
+  name: 'FlipCard',
+  components: {
+    EmployeesCards
   }
 }
 </script>
 
-<style scoped>
-.flip-container {
-  perspective: 1000px;
-  height: 400px;
-  cursor: pointer;
-}
+<style>
+.grid-text-centre {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-.flipper {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-}
+        .flip-card {
+            background-color: transparent;
+            width: 250px;
+            height: 250px;
+            perspective: 1000px;
+            margin: 0 auto;
+        }
 
-.front, .back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 10px;
-  padding: 25px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
 
-.front {
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
 
-.back {
-  background: white;
-  transform: rotateY(180deg);
-  display: flex;
-  flex-direction: column;
-}
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
 
-.flipped {
-  transform: rotateY(180deg);
-}
+        .flip-card-front {
+            background-color: #2980b9;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-.avatar {
-  width: 80px;
-  height: 80px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
+        .flip-card-back {
+            background-color: #bbb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            transform: rotateY(180deg);
+        }
 
-.score-display {
-  font-size: 2rem;
-  margin: 15px 0;
-}
+        .flip-card-front h1 {
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
 
-.score {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #f6ff00;
-}
+        .flip-card-front p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
 
-.department {
-  background: rgba(255,255,255,0.2);
-  padding: 5px 15px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-}
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .grid-text-centre {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 15px;
+            }
+            
+            .flip-card {
+                width: 200px;
+                height: 200px;
+            }
+        }
 
-.click-hint {
-  margin-top: 20px;
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-.review-content {
-  margin-top: 15px;
-  padding: 15px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  flex-grow: 1;
-}
-
-.review-text {
-  font-style: italic;
-  margin-bottom: 10px;
-}
-
-.reviewer {
-  text-align: right;
-  color: #666;
-}
 </style>
-
-

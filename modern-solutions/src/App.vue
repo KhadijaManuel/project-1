@@ -15,7 +15,15 @@
 
 <script>
 
+import FlipCard from './components/FlipCard.vue'
+import EmployeesCards from './components/EmployeesCards.vue'
 
+export default {
+  components: {
+    FlipCard,
+    EmployeesCards
+  }
+}
 
 </script>
 
