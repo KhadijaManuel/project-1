@@ -26,7 +26,7 @@ export default {
             margin: 0 auto;
         } */
 .grid-text-centre {
-    margin-left: 130px; /* Add space for the sidebar (sidebar is 120px wide + 10px gap) */
+    margin-right: 80px; /* Add space for the sidebar (sidebar is 120px wide + 10px gap) */
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     column-gap: 20px;

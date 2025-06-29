@@ -465,7 +465,7 @@ export default {
         .grid-text-centre {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            column-gap: 20px;
+            column-gap: 40px;
             row-gap: 80px;
             padding: 20px;
             max-width: 1200px;

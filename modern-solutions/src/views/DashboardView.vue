@@ -1,21 +1,26 @@
 <template>
-
-    <strong><h1>Modern Solutions</h1></strong>
-    <div>
-        <h4>Welcome</h4>
-    </div>
+     <div class="dashboard-wrapper">
     <nav aria-label="Sidebar navigation">
-    <div class="vertical-menu" sidebar>
-        <a href="#Login" class="active">Login</a> <br>
-        <a href="#employee" class="active">Employee Details</a> <br>
-        <a href="/employee-attendance">Attend</a> <br>
-        <a href="#leave" class="active">Leave</a> <br>
-        <a href="#payroll" class="active">Payroll</a> <br>
-    </div>
-    <CardComp v-if="employee" :employee="employee"/>
+      <div class="vertical-menu">
+        <router-link to="/login" class="active">Login</router-link>
+        <router-link to="/employee" class="active">Employee Details</router-link>
+        <router-link to="/employee-attendance">Attend</router-link>
+        <router-link to="/leave" class="active">Leave</router-link>
+        <router-link to="/payroll" class="active">Payroll</router-link>
+      </div>
     </nav>
+    <div class="dashboard-content">
+      <strong><h1>Modern Solutions</h1></strong>
+      <div>
+        <h4>Welcome</h4>
+      </div>
+      <CardComp v-if="employee" :employee="employee"/>
+    </div>
+  </div>
 
+  <h1>Hello,world</h1>
 </template>
+
 
 <script>
 import CardComp from '@/components/FlipCard.vue';
@@ -37,79 +42,6 @@ export default {
        score: 9,
        comments: "Consistently delivers high-quality work and shows leadership potential."
          },
-    //      {
-    //   employeeId: 2,
-    //   employeeName": "Lungile Moyo",
-    //   reviewPeriod": "2024 Q4",
-    //   reviewer": "Thabo Molefe",
-    //   score": 8,
-    //   comments": "Excellent management skills and team support."
-    // },
-    // {
-    //   "employeeId": 3,
-    //   "employeeName": "Thabo Molefe",
-    //   "reviewPeriod": "2024 Q4",
-    //   "reviewer": "Sibongile Nkosi",
-    //   "score": 8,
-    //   "comments": "Pays attention to detail and meets deadlines."
-    // },
-    // {
-    //   "employeeId": 4,
-    //   "employeeName": "Keshav Naidoo",
-    //   "reviewPeriod": "2024 Q4",
-    //   "reviewer": "Zanele Khumalo",
-    //   "score": 7,
-    //   "comments": "Good sales performance, can improve on follow-ups."
-    // },
-    // {
-    //   "employeeId": 5,
-    //   "employeeName": "Zanele Khumalo",
-    //   "reviewPeriod": "2024 Q4",
-    //   "reviewer": "Keshav Naidoo",
-    //   "score": 8,
-    //   "comments": "Creative marketing ideas and strong teamwork."
-    // },
-    // {
-    //   "employeeId": 6,
-    //   "employeeName": "Sipho Zulu",
-    //   "reviewPeriod": "2024 Q4",
-    //   "reviewer": "Naledi Moeketsi",
-    //   "score": 7,
-    //   "comments": "Strong design skills and attention to user experience."
-    // },
-    // {
-    //   "employeeId": 7,
-    //   "employeeName": "Naledi Moeketsi",
-    //   "reviewPeriod": "2024 Q4",
-    //   "reviewer": "Sipho Zulu",
-    //   "score": 8,
-    //   "comments": "Excellent at automating processes and ensuring system reliability."
-    // },
-    // {
-    //   "employeeId": 8,
-    //   "employeeName": "Farai Gumbo",
-    //   "reviewPeriod": "2024 Q4",
-    //   "reviewer": "Zanele Khumalo",
-    //   "score": 7,
-    //   "comments": "Creative content ideas and good collaboration with marketing."
-    // },
-    // {
-    //   employeeId: 9,
-    //   employeeName: "Karabo Dlamini",
-    //   reviewPeriod: "2024 Q4",
-    //   reviewer: "Fatima Patel",
-    //   score: 8,
-    //   comments: "Accurate financial reporting and strong analytical skills."
-    // },
-    // {
-    //   employeeId: 10,
-    //   employeeName: "Fatima Patel",
-    //   reviewPeriod: "2024 Q4",
-    //   reviewer: "Karabo Dlamini",
-    //   score: 9,
-    //   comments: "Excellent customer support leadership and problem-solving."
-    // }
-         
            
         };
     },
@@ -122,15 +54,18 @@ export default {
 </script>
 
 
-<style>
-
+<style scoped>
+.dashboard-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
  
 .vertical-menu {
     width: 120px;
-    height: calc(100vh - 60px); /* Adjust height to be below the topnav (assume topnav is ~60px) */
+    height: calc(100vh -60px); /* Adjust height to be below the topnav (assume topnav is ~60px) */
     background-color: #f1f1f1;
     position: fixed;
-    top: 0px; /* Pushes the sidebar below the topnav */
+    top: 60px; /* Pushes the sidebar below the topnav */
     left: 0;
     padding-top: 10px; /* Less padding so it doesn't overlap */
     display: flex;
@@ -141,13 +76,36 @@ export default {
     z-index: 10;
 }
  
+.vertical-menu router-link {
+    padding: 12px 20px;
+    margin: 6px 0;
+    width: 100%;
+    border-radius: 6px 0 0 6px;
+    color: #2980b9;
+    background: none;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background 0.18s, color 0.18s;
+    display: block;
+ }
 
+ .vertical-menu router-link.router-link-exact-active {
+  background: #eaf6fb;
+  color: #145a86;
+  font-weight: 600;
+}
+
+.vertical-menu router-link:hover {
+  background: #d6ecf7;
+  color: #145a86;
+}
+
+.dashboard-content {
+  margin-left: 120px;
+  padding: 40px 20px;
+  width: 100%;
+}
 /* .topnav {
-    overflow: hidden;
-    background-color: #333;
-} */
-
-.topnav {
     overflow: hidden;
     background-color: #333;
     width: 100vw;
@@ -201,12 +159,12 @@ export default {
     .topnave input[type=text]{
         border: 1px solid #ccc;
     }
-}
+}  */
 
 
-div[sidebar] {
+/* div[sidebar] {
     width: 120px;
-    min-height: 100vh;
+    min-height: calc(100vh - 60px);
     background: #fff;
     border-right: 1.5px solid #e0e6ed;
     box-shadow: 2px 0 12px rgba(41,128,185,0.04);
@@ -217,9 +175,9 @@ div[sidebar] {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-}
+} */
 
-div[sidebar] a,
+/* div[sidebar] a,
 div[sidebar] router-link {
     padding: 12px 20px;
     margin: 6px 0;
@@ -244,6 +202,6 @@ div[sidebar] a:hover,
 div[sidebar] router-link:hover {
     background: #d6ecf7;
     color: #145a86;
-}
+}  */
 
 </style>
