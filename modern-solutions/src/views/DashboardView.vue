@@ -4,11 +4,11 @@
     <div>
         <h4>Welcome</h4>
     </div>
-    <nav>
+    <nav aria-label="Sidebar navigation">
     <div class="vertical-menu" sidebar>
         <a href="#Login" class="active">Login</a> <br>
         <a href="#employee" class="active">Employee Details</a> <br>
-        <router-link to="/employee-attendance">Attend</router-link> <br>
+        <a href="/employee-attendance">Attend</a> <br>
         <a href="#leave" class="active">Leave</a> <br>
         <a href="#payroll" class="active">Payroll</a> <br>
     </div>
@@ -121,19 +121,44 @@ export default {
 
 </script>
 
+
 <style>
+
+ 
 .vertical-menu {
     width: 120px;
-    /* height: 100%; */
-    /* background-color: #f1f1f1; */
+    height: calc(100vh - 60px); /* Adjust height to be below the topnav (assume topnav is ~60px) */
+    background-color: #f1f1f1;
     position: fixed;
-    top : 0;
+    top: 0px; /* Pushes the sidebar below the topnav */
     left: 0;
-    padding-top: 20px;
+    padding-top: 10px; /* Less padding so it doesn't overlap */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-right: 1.5px solid #e0e6ed;
+    box-shadow: 2px 0 12px rgba(41,128,185,0.04);
+    z-index: 10;
 }
+ 
+
+/* .topnav {
+    overflow: hidden;
+    background-color: #333;
+} */
+
 .topnav {
     overflow: hidden;
     background-color: #333;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .topnav a {
@@ -178,14 +203,47 @@ export default {
     }
 }
 
-div[sidebar] a {
-    padding: 10px 15px;
-    text-decoration: none;
-    color: #333;
-    display: block;
-    width: 35px;
-    height: 5px;
+
+div[sidebar] {
+    width: 120px;
+    min-height: 100vh;
+    background: #fff;
+    border-right: 1.5px solid #e0e6ed;
+    box-shadow: 2px 0 12px rgba(41,128,185,0.04);
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+div[sidebar] a,
+div[sidebar] router-link {
+    padding: 12px 20px;
     margin: 6px 0;
+    width: 100%;
+    border-radius: 6px 0 0 6px;
+    color: #2980b9;
+    background: none;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background 0.18s, color 0.18s;
+    display: block;
+}
+
+div[sidebar] a.active,
+div[sidebar] router-link.router-link-exact-active {
+    background: #eaf6fb;
+    color: #145a86;
+    font-weight: 600;
+}
+
+div[sidebar] a:hover,
+div[sidebar] router-link:hover {
+    background: #d6ecf7;
+    color: #145a86;
 }
 
 </style>
