@@ -464,8 +464,9 @@ export default {
      <style>
         .grid-text-centre {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(5, 1fr);
+            column-gap: 20px;
+            row-gap: 80px;
             padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
