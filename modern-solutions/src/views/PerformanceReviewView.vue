@@ -1,57 +1,32 @@
-<template>Add commentMore actions
-  <div class="page">
-    <h2 class="page-title">Performance Reviews</h2>
-    <PerformanceReviewTable :reviews="reviews" @score-change="updateScore" @comments-change="updateComments" @period-change="updatePeriod" />
+<template>
+  <div class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 p-8">
+    <h2 class="text-3xl font-bold mb-6 text-blue-700 dark:text-blue-400">Performance Reviews</h2>
+
+    <!-- Now use the updated EmployeesCards component passing reviews -->
+    <EmployeesCards :employees="reviews" />
   </div>
 </template>
 
 <script>
-import PerformanceReviewTable from '@/components/PerformanceReviewTable.vue'
+import EmployeesCards from "@/components/EmployeesCards.vue";
 
 export default {
-  components: { PerformanceReviewTable },
+  components: {
+    EmployeesCards,
+  },
   data() {
     return {
-      // List of performance reviews
-      reviews: []
-    }
+      reviews: [],
+    };
   },
   async mounted() {
-    // Fetches the performance reviews when the component is mounted
-    const response = await fetch('/data/performance.json')
-    const data = await response.json()
-    this.reviews = data.performanceReviews
-  },
-  methods: {
-    // Methods to handle updates to the reviews
-    // These methods will be called when the user changes the score, comments or review period
-    updateScore(idx, newScore) {
-      this.reviews[idx].score = newScore
-      alert(
-        `Score for ${this.reviews[idx].employeeName} updated to ${newScore}`
-      )
-    },
-    updateComments(idx, newComments) {
-      this.reviews[idx].comments = newComments
-      alert(
-        `Comments for ${this.reviews[idx].employeeName} updated to ${newComments}`
-      )
-    },
-    updatePeriod(idx, newPeriod) {
-      this.reviews[idx].reviewPeriod = newPeriod
-      alert(
-        `Review period for ${this.reviews[idx].employeeName} updated to ${newPeriod}`
-      )
+    try {
+      const response = await fetch("/data/performance.json");
+      const data = await response.json();
+      this.reviews = data.performanceReviews;
+    } catch (error) {
+      console.error("Error loading performance reviews:", error);
     }
-  }
-}
+  },
+};
 </script>
-
-<style scoped>
-.page {
-  padding: 0rem;
-}
-.page-title {
-  margin-bottom: 1rem;
-}
-</style>

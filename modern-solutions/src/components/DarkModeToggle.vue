@@ -1,6 +1,6 @@
 <template>
-  <div class="flex items-center p-4">
-    <label class="relative inline-flex items-center cursor-pointer">
+  <div class="flex items-center">
+    <label class="relative inline-flex items-center cursor-pointer select-none">
       <input
         type="checkbox"
         v-model="isDarkMode"
@@ -8,24 +8,38 @@
         class="sr-only"
         aria-label="Toggle dark mode"
       />
-      <div class="w-11 h-6 bg-gray-300 rounded-full shadow-inner dark:bg-gray-600"></div>
+      <!-- Track -->
+      <div class="w-14 h-7 bg-gray-300 dark:bg-gray-600 rounded-full shadow-inner relative transition-colors duration-300">
+        <!-- Sun icon on left -->
+        <SunIcon
+          class="absolute left-2 top-1.5 w-4 h-4 text-yellow-400 transition-opacity duration-300"
+          :class="{ 'opacity-100': !isDarkMode, 'opacity-0': isDarkMode }"
+        />
+        <!-- Moon icon on right -->
+        <MoonIcon
+          class="absolute right-2 top-1.5 w-4 h-4 text-gray-700 dark:text-gray-300 transition-opacity duration-300"
+          :class="{ 'opacity-100': isDarkMode, 'opacity-0': !isDarkMode }"
+        />
+      </div>
+
+      <!-- Thumb -->
       <div
-        class="absolute left-1 top-1 w-5 h-5 bg-white rounded-full shadow transform transition-transform duration-200 ease-in-out"
-        :class="{ 'translate-x-5': isDarkMode }"
+        class="absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow-md transform transition-transform duration-300 ease-in-out"
+        :class="{ 'translate-x-7': isDarkMode }"
       ></div>
     </label>
-    <span class="ml-3 text-gray-800 dark:text-gray-200 select-none">
-      {{ isDarkMode ? 'Dark Mode' : 'Light Mode' }}
-    </span>
   </div>
 </template>
 
 <script>
+import { SunIcon, MoonIcon } from 'lucide-vue-next';
+
 export default {
   name: 'DarkModeToggle',
+  components: { SunIcon, MoonIcon },
   data() {
     return {
-      isDarkMode: localStorage.getItem('darkMode') === 'true'
+      isDarkMode: localStorage.getItem('darkMode') === 'true',
     };
   },
   mounted() {
@@ -38,7 +52,7 @@ export default {
     },
     applyTheme() {
       document.documentElement.classList.toggle('dark', this.isDarkMode);
-    }
-  }
+    },
+  },
 };
 </script>

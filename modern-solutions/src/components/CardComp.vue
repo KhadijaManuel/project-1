@@ -7,6 +7,6 @@
 
 <script>
 export default {
-  name: "CardComp",
+  name: "CardComp",//comp for each page to be used 
 };
 </script>

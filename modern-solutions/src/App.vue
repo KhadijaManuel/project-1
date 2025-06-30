@@ -29,7 +29,3 @@ export default {
   },
 };
 </script>
-
-<style>
-/* Your global styles if needed */
-</style>

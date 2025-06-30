@@ -4,8 +4,10 @@
     <!-- Main Content -->
     <main class="flex-1 overflow-y-auto p-6">
       <CardComp class="max-w-6xl mx-auto p-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg">
-        <div class="flex justify-between items-center mb-8">
-          <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100">Employee Payroll</h1>
+           <div class="mb-8">
+          <h2 class="text-3xl font-extrabold text-blue-700 dark:text-blue-400 tracking-tight">
+            Employee Payroll
+          </h2>
         </div>
 
         <div class="overflow-x-auto">

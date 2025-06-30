@@ -1,7 +1,7 @@
 <template>
-  <div class="overflow-x-auto">
-    <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-      <thead class="bg-teal-600 text-white text-left text-sm uppercase">
+  <div class="overflow-x-auto bg-gray-100 dark:bg-gray-900 min-h-screen p-4">
+    <table class="min-w-full bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden text-sm text-gray-800 dark:text-gray-100">
+      <thead class="bg-teal-600 text-white text-left uppercase">
         <tr>
           <th class="px-4 py-3">ID</th>
           <th class="px-4 py-3">Name</th>
@@ -13,11 +13,11 @@
           <th class="px-4 py-3">Actions</th>
         </tr>
       </thead>
-      <tbody class="text-gray-700 text-sm">
+      <tbody>
         <tr
           v-for="(employee, index) in employees"
           :key="employee.id"
-          class="border-b hover:bg-gray-50 transition-transform duration-200 hover:scale-[1.01] active:scale-95"
+          class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-transform duration-200 hover:scale-[1.01] active:scale-95"
         >
           <td class="px-4 py-2 font-medium">{{ employee.id }}</td>
 
@@ -25,7 +25,7 @@
             <input
               v-if="employee.isEditing"
               v-model="employee.name"
-              class="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-gray-700 text-sm focus:outline-none"
             />
             <span v-else>{{ employee.name }}</span>
           </td>
@@ -34,7 +34,7 @@
             <input
               v-if="employee.isEditing"
               v-model="employee.position"
-              class="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-gray-700 text-sm focus:outline-none"
             />
             <span v-else>{{ employee.position }}</span>
           </td>
@@ -43,7 +43,7 @@
             <input
               v-if="employee.isEditing"
               v-model="employee.department"
-              class="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-gray-700 text-sm focus:outline-none"
             />
             <span v-else>{{ employee.department }}</span>
           </td>
@@ -52,7 +52,7 @@
             <input
               v-if="employee.isEditing"
               v-model="employee.salary"
-              class="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-gray-700 text-sm focus:outline-none"
             />
             <span v-else>{{ employee.salary }}</span>
           </td>
@@ -61,7 +61,7 @@
             <input
               v-if="employee.isEditing"
               v-model="employee.history"
-              class="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-gray-700 text-sm focus:outline-none"
             />
             <span v-else>{{ employee.history }}</span>
           </td>
@@ -70,7 +70,7 @@
             <input
               v-if="employee.isEditing"
               v-model="employee.contact"
-              class="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:outline-none"
+              class="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-gray-700 text-sm focus:outline-none"
             />
             <span v-else>{{ employee.contact }}</span>
           </td>
@@ -105,15 +105,16 @@ export default {
   },
   methods: {
     toggleEdit(employee) {
+      if (employee.isEditing) {
+        this.$emit('update-employee', employee);
+      }
       employee.isEditing = !employee.isEditing;
     },
     deleteEmployee(index) {
-      this.$emit('delete-employee', index);
+      if (confirm('Are you sure you want to delete this employee?')) {
+        this.$emit('delete-employee', index);
+      }
     }
   }
 };
 </script>
-
-<style scoped>
-/* No custom styles needed — all Tailwind */
-</style>
