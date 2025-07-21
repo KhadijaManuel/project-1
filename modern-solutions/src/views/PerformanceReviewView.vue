@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 p-8">
     <h2 class="text-3xl font-bold mb-6 text-blue-700 dark:text-blue-400">Performance Reviews</h2>
 
-    <!-- Now use the updated EmployeesCards component passing reviews -->
+    <!-- Pass reviews as 'employees' prop -->
     <EmployeesCards :employees="reviews" />
   </div>
 </template>

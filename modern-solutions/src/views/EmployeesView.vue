@@ -117,7 +117,9 @@
   </script>
 
   <style scoped>
+
   .input-style {
+    
     @apply w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition;
   }
   </style>

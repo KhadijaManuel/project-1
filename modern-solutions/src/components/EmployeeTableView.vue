@@ -1,5 +1,16 @@
 <template>
   <div class="overflow-x-auto bg-gray-100 dark:bg-gray-900 min-h-screen p-4">
+    <!-- Search Bar -->
+    <div class="mb-4">
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="Search by name..."
+        class="w-full max-w-sm px-4 py-2 border rounded shadow-sm dark:bg-gray-800 dark:text-white dark:border-gray-700"
+      />
+    </div>
+
+    <!-- Employee Table -->
     <table class="min-w-full bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden text-sm text-gray-800 dark:text-gray-100">
       <thead class="bg-teal-600 text-white text-left uppercase">
         <tr>
@@ -15,7 +26,7 @@
       </thead>
       <tbody>
         <tr
-          v-for="(employee, index) in employees"
+          v-for="(employee, index) in filteredEmployees"
           :key="employee.id"
           class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-transform duration-200 hover:scale-[1.01] active:scale-95"
         >
@@ -100,8 +111,20 @@ export default {
   props: {
     employees: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
+  },
+  data() {
+    return {
+      searchQuery: '',
+    };
+  },
+  computed: {
+    filteredEmployees() {
+      return this.employees.filter((employee) =>
+        employee.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
   },
   methods: {
     toggleEdit(employee) {
@@ -114,7 +137,7 @@ export default {
       if (confirm('Are you sure you want to delete this employee?')) {
         this.$emit('delete-employee', index);
       }
-    }
-  }
+    },
+  },
 };
 </script>

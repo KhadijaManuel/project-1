@@ -1,252 +1,64 @@
- <template>
-  <div class="grid-text-centre">
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h1>Sibongile Nkosi</h1>
-                    <p>Software Engineer</p>
-                    <p>Development Department</p>
-                </div>
-                <div class="flip-card-back">
-                    <div class="performance-content">
-                        <h3>Performance Review</h3>
-                        <div class="chart-container">
-                            <canvas id="attendance1" class="chart"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="payroll1" class="chart"></canvas>
-                        </div>
-                        <div class="stats">
-                            <p><strong>Attendance:</strong> 80% | <strong>Salary:</strong> R69,500</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<template>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 p-6 max-w-7xl mx-auto">
+    <div
+      v-for="employee in employees"
+      :key="employee.id"
+      class="relative w-64 h-96 mx-auto [perspective:1000px] group"
+    >
+      <div
+        class="relative w-full h-full text-center transition-transform duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]"
+      >
+        <!-- Front Side -->
+        <div
+          class="absolute w-full h-full rounded-xl shadow-lg bg-blue-700 text-white flex flex-col items-center justify-center px-6 [backface-visibility:hidden]"
+        >
+          <!-- Profile Picture -->
+          <img
+            :src="employee.photo"
+            alt="Profile Picture"
+            class="w-24 h-24 rounded-full object-cover border-4 border-white mb-4 shadow-md"
+          />
+          <h1 class="text-xl font-bold mb-2">{{ employee.name }}</h1>
+          <p class="text-sm">{{ employee.position }}</p>
+          <p class="text-sm">{{ employee.department }} Department</p>
         </div>
 
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h1>Lungile Moyo</h1>
-                    <p>HR Manager</p>
-                    <p>Human Resources</p>
-                </div>
-                <div class="flip-card-back">
-                    <div class="performance-content">
-                        <h3>Performance Review</h3>
-                        <div class="chart-container">
-                            <canvas id="attendance2" class="chart"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="payroll2" class="chart"></canvas>
-                        </div>
-                        <div class="stats">
-                            <p><strong>Attendance:</strong> 80% | <strong>Salary:</strong> R79,000</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Back Side -->
+        <div
+          class="absolute w-full h-full rounded-xl shadow-lg bg-white text-gray-800 p-4 overflow-y-auto [backface-visibility:hidden] [transform:rotateY(180deg)]"
+        >
+          <div>
+            <h3 class="text-lg font-semibold text-blue-700 text-center mb-3">Performance Review</h3>
 
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h1>Thabo Molefe</h1>
-                    <p>Quality Analyst</p>
-                    <p>Quality Assurance</p>
-                </div>
-                <div class="flip-card-back">
-                    <div class="performance-content">
-                        <h3>Performance Review</h3>
-                        <div class="chart-container">
-                            <canvas id="attendance3" class="chart"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="payroll3" class="chart"></canvas>
-                        </div>
-                        <div class="stats">
-                            <p><strong>Attendance:</strong> 80% | <strong>Salary:</strong> R54,800</p>
-                        </div>
-                    </div>
-                </div>
+            <!-- Charts -->
+            <div class="h-20 mb-2">
+              <canvas :id="`attendance${employee.id}`" class="w-full h-full"></canvas>
             </div>
-        </div>
+            <div class="h-20 mb-2">
+              <canvas :id="`payroll${employee.id}`" class="w-full h-full"></canvas>
+            </div>
 
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h1>Keshav Naidoo</h1>
-                    <p>Sales Representative</p>
-                    <p>Sales Department</p>
-                </div>
-                <div class="flip-card-back">
-                    <div class="performance-content">
-                        <h3>Performance Review</h3>
-                        <div class="chart-container">
-                            <canvas id="attendance4" class="chart"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="payroll4" class="chart"></canvas>
-                        </div>
-                        <div class="stats">
-                            <p><strong>Attendance:</strong> 80% | <strong>Salary:</strong> R59,700</p>
-                        </div>
-                    </div>
-                </div>
+            <!-- Stats -->
+            <div class="text-xs space-y-1 mt-2">
+              <p>
+                <span class="font-semibold">Attendance:</span> {{ employee.attendanceRate }}% |
+                <span class="font-semibold">Salary:</span> R{{ employee.finalSalary.toLocaleString() }}
+              </p>
+              <p><span class="font-semibold">Score:</span> {{ employee.review.score }}/10</p>
+              <p><span class="font-semibold">Reviewer:</span> {{ employee.review.reviewer }}</p>
+              <p class="italic text-gray-600">
+                <span class="font-semibold">Comments:</span> {{ employee.review.comments }}
+              </p>
             </div>
+          </div>
         </div>
-
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h1>Zanele Khumalo</h1>
-                    <p>Marketing Specialist</p>
-                    <p>Marketing Department</p>
-                </div>
-                <div class="flip-card-back">
-                    <div class="performance-content">
-                        <h3>Performance Review</h3>
-                        <div class="chart-container">
-                            <canvas id="attendance5" class="chart"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="payroll5" class="chart"></canvas>
-                        </div>
-                        <div class="stats">
-                            <p><strong>Attendance:</strong> 80% | <strong>Salary:</strong> R57,850</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h1>Sipho Zulu</h1>
-                    <p>UI/UX Designer</p>
-                    <p>Design Department</p>
-                </div>
-                <div class="flip-card-back">
-                    <div class="performance-content">
-                        <h3>Performance Review</h3>
-                        <div class="chart-container">
-                            <canvas id="attendance6" class="chart"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="payroll6" class="chart"></canvas>
-                        </div>
-                        <div class="stats">
-                            <p><strong>Attendance:</strong> 80% | <strong>Salary:</strong> R64,800</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h1>Naledi Moeketsi</h1>
-                    <p>DevOps Engineer</p>
-                    <p>IT Department</p>
-                </div>
-                <div class="flip-card-back">
-                    <div class="performance-content">
-                        <h3>Performance Review</h3>
-                        <div class="chart-container">
-                            <canvas id="attendance7" class="chart"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="payroll7" class="chart"></canvas>
-                        </div>
-                        <div class="stats">
-                            <p><strong>Attendance:</strong> 80% | <strong>Salary:</strong> R71,800</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h1>Farai Gumbo</h1>
-                    <p>Content Strategist</p>
-                    <p>Marketing Department</p>
-                </div>
-                <div class="flip-card-back">
-                    <div class="performance-content">
-                        <h3>Performance Review</h3>
-                        <div class="chart-container">
-                            <canvas id="attendance8" class="chart"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="payroll8" class="chart"></canvas>
-                        </div>
-                        <div class="stats">
-                            <p><strong>Attendance:</strong> 80% | <strong>Salary:</strong> R56,000</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h1>Karabo Dlamini</h1>
-                    <p>Accountant</p>
-                    <p>Finance Department</p>
-                </div>
-                <div class="flip-card-back">
-                    <div class="performance-content">
-                        <h3>Performance Review</h3>
-                        <div class="chart-container">
-                            <canvas id="attendance9" class="chart"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="payroll9" class="chart"></canvas>
-                        </div>
-                        <div class="stats">
-                            <p><strong>Attendance:</strong> 80% | <strong>Salary:</strong> R61,500</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front">
-                    <h1>Fatima Patel</h1>
-                    <p>Customer Support Lead</p>
-                    <p>Support Department</p>
-                </div>
-                <div class="flip-card-back">
-                    <div class="performance-content">
-                        <h3>Performance Review</h3>
-                        <div class="chart-container">
-                            <canvas id="attendance10" class="chart"></canvas>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="payroll10" class="chart"></canvas>
-                        </div>
-                        <div class="stats">
-                            <p><strong>Attendance:</strong> 80% | <strong>Salary:</strong> R57,750</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-
- </template>
-
+  </div>
+</template>
 
 <script>
-
-   import Chart from 'chart.js/auto'
+import Chart from 'chart.js/auto'
 
 export default {
   name: 'EmployeesCards',
@@ -261,7 +73,13 @@ export default {
           finalSalary: 69500,
           attendanceRate: 80,
           attendanceData: [1, 0, 1, 1, 1],
-          salaryData: [69500, 70000, 69000, 69500, 70200]
+          salaryData: [69500, 70000, 69000, 69500, 70200],
+          photo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.goodgallery.com%2Faff0103d-b383-4d77-a4d3-549a4ba909b4%2Ft%2F2560%2F2b7bx9eq%2Facting-headshot-photographer-actors-headshots-10.jpg&f=1&nofb=1&ipt=b239a0d56de8ff3d4f8b6af60b226f1e2857894b36072c64579609d8c05bf615",
+          review: {
+            score: 9,
+            reviewer: "Lungile Moyo",
+            comments: "Consistently delivers high-quality work and shows leadership potential."
+          }
         },
         {
           id: 2,
@@ -271,7 +89,13 @@ export default {
           finalSalary: 79000,
           attendanceRate: 80,
           attendanceData: [1, 1, 0, 1, 1],
-          salaryData: [79000, 79500, 78800, 79000, 79300]
+          salaryData: [79000, 79500, 78800, 79000, 79300],
+          photo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.squarespace-cdn.com%2Fcontent%2Fv1%2F572e050c4d088ea3a8f0ac9d%2F1606395599785-R4HY3W6X49YZT6O8ML7R%2FHeadshots-Atlanta-Professional.jpg&f=1&nofb=1&ipt=86839c89cfd740a43bbe00f31a188fff70af6e0fd828f90e1513ca5553ad0d51",
+          review: {
+            score: 8,
+            reviewer: "Thabo Molefe",
+            comments: "Excellent management skills and team support."
+          }
         },
         {
           id: 3,
@@ -281,7 +105,13 @@ export default {
           finalSalary: 54800,
           attendanceRate: 80,
           attendanceData: [1, 1, 1, 0, 1],
-          salaryData: [54800, 55000, 54600, 54800, 55100]
+          salaryData: [54800, 55000, 54600, 54800, 55100],
+          photo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.carvermostardi.com%2Fcmos%2Fwp-content%2Fuploads%2F2018%2F05%2Fcorporate_headshots_tampa_006.jpg&f=1&nofb=1&ipt=3f48a93e92913aaa7ce2bbbc15b85c4f0a34a58a71ffedec5e1f82ed6b830ae3",
+          review: {
+            score: 8,
+            reviewer: "Sibongile Nkosi",
+            comments: "Pays attention to detail and meets deadlines."
+          }
         },
         {
           id: 4,
@@ -291,7 +121,13 @@ export default {
           finalSalary: 59700,
           attendanceRate: 80,
           attendanceData: [0, 1, 1, 1, 1],
-          salaryData: [59700, 60000, 59400, 59700, 60000]
+          salaryData: [59700, 60000, 59400, 59700, 60000],
+          photo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.squarespace-cdn.com%2Fcontent%2Fv1%2F5747b95c8a65e22d87e2be51%2F1678346232026-9Y97VT0A8RUVS2D6ZDGT%2F8C2A5953-Boston%2BHeadshot%2BPhotographer%2B-%2BGiovanni%2BThe%2BPhotograher%2B-%2BDawn.jpg&f=1&nofb=1&ipt=78c6286fd99155cf7e984db240734c29d3ce4d8136e52894a9337d568feb358f",
+          review: {
+            score: 7,
+            reviewer: "Zanele Khumalo",
+            comments: "Good sales performance, can improve on follow-ups."
+          }
         },
         {
           id: 5,
@@ -301,7 +137,13 @@ export default {
           finalSalary: 57850,
           attendanceRate: 80,
           attendanceData: [1, 1, 0, 1, 1],
-          salaryData: [57850, 58000, 57700, 57850, 58100]
+          salaryData: [57850, 58000, 57700, 57850, 58100],
+          photo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.squarespace-cdn.com%2Fcontent%2Fv1%2F6204821bfe06b76898b431c5%2F1661872946038-HFUT1IX9DB99YK644R7F%2FAW5A3965%2Bcopy.jpg&f=1&nofb=1&ipt=3b7d1f942baf6391934f116c08e50872e3351bbb559d93ef073b062c5e5f493d",
+          review: {
+            score: 8,
+            reviewer: "Keshav Naidoo",
+            comments: "Creative marketing ideas and strong teamwork."
+          }
         },
         {
           id: 6,
@@ -311,7 +153,13 @@ export default {
           finalSalary: 64800,
           attendanceRate: 80,
           attendanceData: [1, 1, 0, 1, 1],
-          salaryData: [64800, 65000, 64600, 64800, 65100]
+          salaryData: [64800, 65000, 64600, 64800, 65100],
+          photo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.showit.co%2F1200%2FA4eQ9dEARFywLp4hra70LQ%2F82976%2Fjanel-lee_photography_cincinnati_ohio_professional_headshots_personal_branding_justin_england.jpg&f=1&nofb=1&ipt=5d36675c84a1f62f43ebf2c9eac19fd05e9752c2d8261a6fad288fb9894547b1",
+          review: {
+            score: 7,
+            reviewer: "Naledi Moeketsi",
+            comments: "Strong design skills and attention to user experience."
+          }
         },
         {
           id: 7,
@@ -321,7 +169,13 @@ export default {
           finalSalary: 71800,
           attendanceRate: 80,
           attendanceData: [1, 1, 1, 0, 1],
-          salaryData: [71800, 72000, 71600, 71800, 72100]
+          salaryData: [71800, 72000, 71600, 71800, 72100],
+          photo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.showit.co%2F1200%2FpWdEaN6EQOSy86ZaABriZQ%2F181238%2Fbest_metro_atlanta_headshot_photographer.jpg&f=1&nofb=1&ipt=4401394f040cf3070f2bb5f741f316520fcf7a5cefe8baa4ea8f16414022d66a",
+          review: {
+            score: 8,
+            reviewer: "Sipho Zulu",
+            comments: "Excellent at automating processes and ensuring system reliability."
+          }
         },
         {
           id: 8,
@@ -331,7 +185,13 @@ export default {
           finalSalary: 56000,
           attendanceRate: 80,
           attendanceData: [1, 0, 1, 1, 1],
-          salaryData: [56000, 56200, 55800, 56000, 56300]
+          salaryData: [56000, 56200, 55800, 56000, 56300],
+          photo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.bethesdaheadshots.com%2Fwp-content%2Fuploads%2F2020%2F02%2FJonathan-Business-Headshot.jpg&f=1&nofb=1&ipt=1d41e3f16cb5d12b8d551c6deda32d935f59b6b1603db3efdaa7dfa81bc9a5fb",
+          review: {
+            score: 7,
+            reviewer: "Zanele Khumalo",
+            comments: "Creative content ideas and good collaboration with marketing."
+          }
         },
         {
           id: 9,
@@ -341,7 +201,13 @@ export default {
           finalSalary: 61500,
           attendanceRate: 80,
           attendanceData: [1, 1, 1, 0, 1],
-          salaryData: [61500, 61700, 61300, 61500, 61800]
+          salaryData: [61500, 61700, 61300, 61500, 61800],
+          photo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2Foriginals%2F0c%2F2e%2F5c%2F0c2e5c6ae0393845bf3a4c159c933f03.jpg&f=1&nofb=1&ipt=caac82885de61295d37418de841d54ee5caf28178b3edad88b79f06243602572",
+          review: {
+            score: 8,
+            reviewer: "Fatima Patel",
+            comments: "Accurate financial reporting and strong analytical skills."
+          }
         },
         {
           id: 10,
@@ -351,7 +217,13 @@ export default {
           finalSalary: 57750,
           attendanceRate: 80,
           attendanceData: [1, 1, 0, 1, 1],
-          salaryData: [57750, 58000, 57500, 57750, 58000]
+          salaryData: [57750, 58000, 57500, 57750, 58000],
+          photo: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.freepik.com%2Fpremium-photo%2Fprofessional-indian-female-headshots-business-corporate-women_203363-204.jpg&f=1&nofb=1&ipt=133343285b9319e5817f59a044ff70d6c13fa86b7225083ca9799ae20bd6a8bc",
+          review: {
+            score: 9,
+            reviewer: "Karabo Dlamini",
+            comments: "Excellent customer support leadership and problem-solving."
+          }
         }
       ]
     }
@@ -362,7 +234,6 @@ export default {
   methods: {
     createCharts() {
       this.employees.forEach((employee) => {
-        // Attendance chart
         const attendanceCtx = document.getElementById(`attendance${employee.id}`)
         if (attendanceCtx) {
           new Chart(attendanceCtx, {
@@ -381,28 +252,18 @@ export default {
             options: {
               responsive: true,
               maintainAspectRatio: false,
-              plugins: { 
+              plugins: {
                 legend: { display: false },
-                title: {
-                  display: true,
-                  text: 'Weekly Attendance',
-                  font: { size: 10 }
-                }
+                title: { display: true, text: 'Weekly Attendance', font: { size: 10 } }
               },
               scales: {
-                x: { 
-                  display: true,
-                  ticks: { font: { size: 8 } }
-                },
-                y: { 
-                  display: true,
-                  min: 0, 
+                x: { ticks: { font: { size: 8 } } },
+                y: {
+                  min: 0,
                   max: 1,
-                  ticks: { 
+                  ticks: {
                     font: { size: 8 },
-                    callback: function(value) {
-                      return value === 1 ? 'Present' : 'Absent'
-                    }
+                    callback: (value) => (value === 1 ? 'Present' : 'Absent')
                   }
                 }
               }
@@ -410,7 +271,6 @@ export default {
           })
         }
 
-        // Payroll chart
         const payrollCtx = document.getElementById(`payroll${employee.id}`)
         if (payrollCtx) {
           new Chart(payrollCtx, {
@@ -429,26 +289,16 @@ export default {
             options: {
               responsive: true,
               maintainAspectRatio: false,
-              plugins: { 
+              plugins: {
                 legend: { display: false },
-                title: {
-                  display: true,
-                  text: 'Monthly Salary',
-                  font: { size: 10 }
-                }
+                title: { display: true, text: 'Monthly Salary', font: { size: 10 } }
               },
               scales: {
-                x: { 
-                  display: true,
-                  ticks: { font: { size: 8 } }
-                },
-                y: { 
-                  display: true,
-                  ticks: { 
+                x: { ticks: { font: { size: 8 } } },
+                y: {
+                  ticks: {
                     font: { size: 8 },
-                    callback: function(value) {
-                      return 'R' + value.toLocaleString()
-                    }
+                    callback: (value) => 'R' + value.toLocaleString()
                   }
                 }
               }
@@ -460,109 +310,3 @@ export default {
   }
 }
 </script>
-
-     <style>
-        .grid-text-centre {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            column-gap: 40px;
-            row-gap: 80px;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .flip-card {
-            background-color: transparent;
-            width: 250px;
-            height: 300px;
-            perspective: 1000px;
-            margin: 0 auto;
-        }
-
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-        }
-
-        .flip-card:hover .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .flip-card-front {
-            background-color: #2980b9;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .flip-card-back {
-            background-color: #f9f9f9;
-            color: #333;
-            transform: rotateY(180deg);
-            padding: 15px;
-            overflow-y: auto;
-        }
-
-        .flip-card-front h1 {
-            margin: 0 0 10px 0;
-            font-size: 20px;
-        }
-
-        .flip-card-front p {
-            margin: 5px 0;
-            font-size: 14px;
-        }
-
-        .performance-content h3 {
-            margin: 0 0 15px 0;
-            font-size: 16px;
-            color: #2980b9;
-            text-align: center;
-        }
-
-        .chart-container {
-            height: 80px;
-            margin-bottom: 10px;
-        }
-
-        .chart {
-            height: 80px !important;
-        }
-
-        .stats {
-            font-size: 11px;
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .grid-text-centre {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 15px;
-            }
-            
-            .flip-card {
-                width: 200px;
-                height: 250px;
-            }
-        }
-    </style>
