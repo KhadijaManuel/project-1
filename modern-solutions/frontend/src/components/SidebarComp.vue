@@ -1,8 +1,8 @@
 <template>
   <aside
     :class="[
-      'bg-white dark:bg-gray-800 min-h-screen p-4 flex flex-col justify-between border-r border-gray-200 dark:border-gray-700 transition-all duration-300',
-      isCollapsed ? 'w-16' : 'w-64'
+      'bg-white dark:bg-gray-800 min-h-screen flex flex-col justify-between border-r border-gray-200 dark:border-gray-700 transition-all duration-300',
+      isCollapsed ? 'w-16 p-2' : 'w-64 p-4'
     ]"
   >
     <!-- Collapse toggle button -->
@@ -33,14 +33,15 @@
         <li v-for="item in menuItems" :key="item.path" class="relative group">
           <router-link
             :to="item.path"
-            class="flex items-center gap-3 rounded-l-lg px-4 py-3 transition-colors duration-200"
+            class="flex items-center gap-3 rounded-l-lg px-2 py-3 transition-colors duration-200"
             :class="
               $route.path === item.path
                 ? 'bg-blue-800 border-l-4 border-blue-500 font-bold text-white'
                 : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
             "
           >
-            <component :is="item.icon" class="w-5 h-5" />
+            <!-- ✅ icon will now always show -->
+            <component :is="item.icon" class="w-5 h-5 shrink-0 text-current" />
             <span v-if="!isCollapsed">{{ item.label }}</span>
           </router-link>
 
@@ -62,7 +63,6 @@
       aria-label="Toggle Dark Mode"
     >
       <template v-if="isDarkMode">
-        <!-- Moon icon -->
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="w-6 h-6 text-yellow-400"
@@ -79,7 +79,6 @@
         </svg>
       </template>
       <template v-else>
-        <!-- Sun icon -->
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="w-6 h-6 text-yellow-500"
@@ -101,63 +100,58 @@
 
 <script>
 import {
-  LayoutDashboardIcon,
-  UsersIcon,
-  CalendarCheckIcon,
-  WalletIcon,
-  PlaneIcon,
-  BarChart2Icon,
-} from "lucide-vue-next";
+  LayoutDashboard,
+  Users,
+  CalendarCheck,
+  Wallet,
+  Plane,
+  BarChart2,
+} from 'lucide-vue-next'
 
 export default {
-  name: "SidebarComp",
+  name: 'SidebarComp',
   components: {
-    LayoutDashboardIcon,
-    UsersIcon,
-    CalendarCheckIcon,
-    WalletIcon,
-    PlaneIcon,
-    BarChart2Icon,
+    LayoutDashboard,
+    Users,
+    CalendarCheck,
+    Wallet,
+    Plane,
+    BarChart2,
   },
   data() {
     return {
       isDarkMode: false,
       isCollapsed: false,
       menuItems: [
-        { path: "/dashboard", label: "Dashboard", icon: "LayoutDashboardIcon" },
-        { path: "/employees", label: "Employees", icon: "UsersIcon" },
-        { path: "/attendance", label: "Attendance", icon: "CalendarCheckIcon" },
-        { path: "/payroll", label: "Payroll", icon: "WalletIcon" },
-        { path: "/leave", label: "Leave", icon: "PlaneIcon" },
-        {
-          path: "/performance",
-          label: "Performance Review",
-          icon: "BarChart2Icon",
-        },
+        { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+        { path: '/employees', label: 'Employees', icon: Users },
+        { path: '/attendance', label: 'Attendance', icon: CalendarCheck },
+        { path: '/payroll', label: 'Payroll', icon: Wallet },
+        { path: '/leave', label: 'Leave', icon: Plane },
+        { path: '/performance', label: 'Performance Review', icon: BarChart2 },
       ],
-    };
+    }
   },
   mounted() {
-    this.isDarkMode = localStorage.getItem("darkMode") === "true";
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true'
     if (this.isDarkMode) {
-      document.documentElement.classList.add("dark");
+      document.documentElement.classList.add('dark')
     }
   },
   methods: {
     toggleDarkMode() {
-      this.isDarkMode = !this.isDarkMode;
-      document.documentElement.classList.toggle("dark", this.isDarkMode);
-      localStorage.setItem("darkMode", this.isDarkMode);
+      this.isDarkMode = !this.isDarkMode
+      document.documentElement.classList.toggle('dark', this.isDarkMode)
+      localStorage.setItem('darkMode', this.isDarkMode)
     },
     toggleSidebar() {
-      this.isCollapsed = !this.isCollapsed;
+      this.isCollapsed = !this.isCollapsed
     },
   },
-};
+}
 </script>
 
 <style>
-/* Optional: add smooth background/text transition globally */
 html {
   transition: background-color 0.5s ease, color 0.5s ease;
 }
