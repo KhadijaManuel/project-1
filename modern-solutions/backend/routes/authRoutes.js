@@ -1,4 +1,4 @@
-// routes/employeeRoutes.js
+// route  for the auth.js
 const express = require('express');
 const router = express.Router();
 

@@ -1,49 +1,68 @@
--- Create the database if not exists
-CREATE DATABASE IF NOT EXISTS modern_tech_solutions;
-USE modern_tech_solutions;
+-- Create database
+CREATE DATABASE moderntech_tech_solutions;
 
--- Drop and create employees table
-DROP TABLE IF EXISTS employees;
+USE moderntech_tech_solutions;
+
+-- employeestable
 CREATE TABLE employees (
-  employee_id INT NOT NULL AUTO_INCREMENT,
-  first_name VARCHAR(70) NOT NULL,
-  last_name VARCHAR(45) NOT NULL,
-  role VARCHAR(70) NOT NULL,
-  department VARCHAR(45) NOT NULL,
-  salary DECIMAL(8,2) NOT NULL,
-  email VARCHAR(45) NOT NULL,
-  PRIMARY KEY (employee_id)
-) ;
+  employee_id INT AUTO_INCREMENT PRIMARY KEY,
+  first_name VARCHAR(100),
+  last_name VARCHAR(100),
+  email VARCHAR(100) UNIQUE,
+  role VARCHAR(50),
+  salary DECIMAL(10,2),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+INSERT INTO employees (first_name, last_name, email, role, salary)
+VALUES
+('Sibongile', 'Nkosi', 'sibongile.nkosi@moderntech.com', 'Software Engineer', 70000.00),
+('Lungile', 'Moyo', 'lungile.moyo@moderntech.com', 'HR Manager', 80000.00),
+('Thabo', 'Molefe', 'thabo.molefe@moderntech.com', 'Quality Analyst', 55000.00),
+('Keshav', 'Naidoo', 'keshav.naidoo@moderntech.com', 'Sales Representative', 60000.00),
+('Zanele', 'Khumalo', 'zanele.khumalo@moderntech.com', 'Marketing Specialist', 58000.00),
+('Sipho', 'Zulu', 'sipho.zulu@moderntech.com', 'UI/UX Designer', 65000.00),
+('Naledi', 'Moeketsi', 'naledi.moeketsi@moderntech.com', 'DevOps Engineer', 72000.00),
+('Farai', 'Gumbo', 'farai.gumbo@moderntech.com', 'Content Strategist', 56000.00),
+('Karabo', 'Dlamini', 'karabo.dlamini@moderntech.com', 'Accountant', 62000.00),
+('Fatima', 'Patel', 'fatima.patel@moderntech.com', 'Customer Support Lead', 58000.00);
 
--- Drop and create payroll table
-DROP TABLE IF EXISTS payroll;
+-- Users table (for login/auth)
+CREATE TABLE users (
+  user_id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(100) UNIQUE,
+  password_hash VARCHAR(255),
+  employee_id INT,
+  FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
+
+-- Payrolltable
 CREATE TABLE payroll (
-  employee_id INT NOT NULL,
-  first_name VARCHAR(70) NOT NULL,
-  last_name VARCHAR(45) NOT NULL,
-  payrollcol VARCHAR(45) DEFAULT NULL,
-  hourly_rate VARCHAR(45) DEFAULT NULL,
-  hours_worked VARCHAR(45) DEFAULT NULL,
-  leave_deductions DECIMAL(10,2) DEFAULT NULL,
-  net_pay DECIMAL(8,2) DEFAULT NULL,
-  final_salary DECIMAL(8,2) DEFAULT NULL,
-  UNIQUE KEY employee_id_UNIQUE (employee_id)
-) ;
+  employee_id INT,
+  base_salary DECIMAL(10,2),
+  deductions DECIMAL(10,2),
+  net_pay DECIMAL(10,2),
+  FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
 
--- Drop and create users_login table
-CREATE TABLE users_login (
-  username VARCHAR(255) NOT NULL,
-  email VARCHAR(45) NOT NULL,
-  password_hash VARCHAR(255) DEFAULT NULL,
-  PRIMARY KEY (email),
-  UNIQUE KEY username_UNIQUE (username)
-) ;
+INSERT INTO payroll (employee_id, base_salary, deductions, net_pay) VALUES
+(1, 69508.00, 8.00, 69500.00),
+(2, 79010.00, 10.00, 79000.00),
+(3, 54804.00, 4.00, 54800.00),
+(4, 59706.00, 6.00, 59700.00),
+(5, 57855.00, 5.00, 57850.00),
+(6, 64802.00, 2.00, 64800.00),
+(7, 71803.00, 3.00, 71800.00),
+(8, 56000.00, 0.00, 56000.00),
+(9, 61505.00, 5.00, 61500.00),
+(10, 57754.00, 4.00, 57750.00);
 
--- Optional: Add foreign keys (if you want)
--- ALTER TABLE payroll
--- ADD CONSTRAINT fk_payroll_employee
--- FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
--- ON DELETE CASCADE ON UPDATE CASCADE;
 
--- Commit if using transactional engine
-COMMIT;
+-- Leavetable
+CREATE TABLE leave_requests (
+  leave_id INT AUTO_INCREMENT PRIMARY KEY,
+  employee_id INT,
+  start_date DATE,
+  end_date DATE,
+  status ENUM('Pending','Approved','Rejected'),
+  FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+);
