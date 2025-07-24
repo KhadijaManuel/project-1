@@ -68,3 +68,65 @@ exports.getPayrollByEmployee = async (req, res) => {
     res.status(500).json({ message: 'Server error while fetching payroll record.' });
   }
 };
+
+// UPDATE payroll record by payroll_id (only update passed fields)
+exports.updatePayroll = async (req, res) => {
+  const { id } = req.params;
+  const { base_salary, deductions, net_pay, hours_worked, leave_deductions } = req.body;
+
+  try {
+    // Fetch current record
+    const [existingRows] = await db.query('SELECT * FROM payroll WHERE payroll_id = ?', [id]);
+    if (existingRows.length === 0) {
+      return res.status(404).json({ message: 'Payroll record not found.' });
+    }
+
+    const existing = existingRows[0];
+
+    // Use existing values if fields are not provided in request
+    const updatedBaseSalary = base_salary !== undefined ? base_salary : existing.base_salary;
+    const updatedDeductions = deductions !== undefined ? deductions : existing.deductions;
+    const updatedNetPay = net_pay !== undefined ? net_pay : existing.net_pay;
+    const updatedHoursWorked = hours_worked !== undefined ? hours_worked : existing.hours_worked;
+    const updatedLeaveDeductions = leave_deductions !== undefined ? leave_deductions : existing.leave_deductions;
+
+    // Update the record
+    await db.query(
+      `UPDATE payroll 
+       SET base_salary = ?, deductions = ?, net_pay = ?, hours_worked = ?, leave_deductions = ?
+       WHERE payroll_id = ?`,
+      [
+        updatedBaseSalary,
+        updatedDeductions,
+        updatedNetPay,
+        updatedHoursWorked,
+        updatedLeaveDeductions,
+        id
+      ]
+    );
+
+    res.json({ message: 'Payroll record updated successfully.' });
+  } catch (err) {
+    console.error('Error updating payroll record:', err);
+    res.status(500).json({ message: 'Server error while updating payroll record.' });
+  }
+};
+
+// DELETE payroll record by payroll_id
+exports.deletePayroll = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [existing] = await db.query('SELECT * FROM payroll WHERE payroll_id = ?', [id]);
+    if (existing.length === 0) {
+      return res.status(404).json({ message: 'Payroll record not found.' });
+    }
+
+    await db.query('DELETE FROM payroll WHERE payroll_id = ?', [id]);
+
+    res.json({ message: 'Payroll record deleted successfully.' });
+  } catch (err) {
+    console.error('Error deleting payroll record:', err);
+    res.status(500).json({ message: 'Server error while deleting payroll record.' });
+  }
+};

@@ -1,13 +1,14 @@
 // routes/payrollRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getAllPayroll, addPayroll, getPayrollByEmployee } = require('../controllers/payrollController');
+const { getAllPayroll, addPayroll, getPayrollByEmployee, updatePayroll, deletePayroll } = require('../controllers/payrollController');
 
-<<<<<<< HEAD
 router.get('/', getAllPayroll);            // GET all data from the database 
 router.post('/', addPayroll);              // POST new record to the database 
 router.get('/:id', getPayrollByEmployee);  // GET by employee_id from the database
-=======
+router.put('/:id', updatePayroll);    
+router.delete('/:id', deletePayroll);
+
 const payrollData = require('../../frontend/public/data/payroll_data.json');
 
 // this gets all the JSON data for payroll
@@ -19,7 +20,7 @@ router.get('/info', (req, res)=> {
 router.get('/', getAllPayroll);            // GET all
 router.post('/', addPayroll);              // POST new record
 router.get('/:id', getPayrollByEmployee);  // GET by employee_id
->>>>>>> d3099adf4c37b9ffcb995226d78b878985af2174
+
 
 module.exports = router;
 
