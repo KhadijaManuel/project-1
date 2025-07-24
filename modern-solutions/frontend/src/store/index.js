@@ -3,35 +3,41 @@ import { createStore } from 'vuex';
 
 export default createStore({
   state: {
-    payrollData: [], // Statefor the  payroll data
-    error: null, // State that handesl error messagee 
+    payrollData: [],  // Store payroll data
+    error: null,  // Store any error messages
   },
   getters: {
-    getPayrollData: (state) => {
-      return state.payrollData; // Getter to access payroll data
-    },
-    getError: (state) => {
-      return state.error; // Getter to access error messages
-    }
+    // Getter to access payroll data
+    getPayrollData: (state) => state.payrollData,
+    
+    // Getter to access error messages
+    getError: (state) => state.error,
   },
   mutations: {
+    // Mutation to set payroll data into state
     setPayrollData(state, payrollData) {
-      state.payrollData = payrollData; //set payroll data
+      state.payrollData = payrollData;
     },
+
+    // Mutation to set error message into state
     setError(state, error) {
-      state.error = error; // set error messages
+      state.error = error;
     },
   },
   actions: {
-    async fetchPayrollData({ commit }){ 
+    // Action to fetch payroll data from the backend
+    async fetchPayrollData({ commit }) {
       try {
-        const res = await axios.get('/data/payroll_data.json'); // Fetch payroll data from JSON file in data folder   
-        commit('setPayrollData', res.data.payrollData); // Commit payroll data to state/local store 
+        // Axios request to the backend API to fetch payroll data
+        const res = await axios.get('http://localhost:5000/payroll');  // Make sure this matches your backend route
+
+        // Commit the data to the Vuex store if the request is successful
+        commit('setPayrollData', res.data);
       } catch (error) {
-        commit('setError', error.message); // Commit error message
+        // Commit any error message if the request fails
+        commit('setError', error.message);
       }
-    }
+    },
   },
-  modules: {
-  }
+  modules: {},
 });

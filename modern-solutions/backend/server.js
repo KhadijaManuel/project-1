@@ -1,25 +1,32 @@
 const express = require('express');
-const cors = require('cors'); // ✅ allows your Vue frontend to call this API
-require('dotenv').config();  // ✅ loads .env variables like DB creds and PORT
+const cors = require('cors'); // allows our Vue frontend to use and call this API
+require('dotenv').config();  // uses the dotenv for db details and the port 
 
-// ✅ modular route files
+
+//modular route files
+const authMiddleware = require('./middleware/authMiddleware');
 const employeeRoutes = require('./routes/employeeRoutes');
 const authRoutes = require('./routes/authRoutes');
 const payrollRoutes = require('./routes/payrollRoutes');
 const leaveRoutes = require('./routes/leaveRoutes');
+const attendanceRoutes = require('./routes/attendanceRoutes');
+const performanceRoutes = require('./routes/performanceRoutes');
 
 const app = express();
-app.use(cors());             // ✅ allows cross-origin requests
-app.use(express.json());     // ✅ parses incoming JSON bodies
+app.use(cors());             // browser blocking or something like that 
+app.use(express.json());     // parses incoming JSON bodies for the thunder client 
 
-// ✅ mounting routes
+
+//routes
 app.use('/employees', employeeRoutes);
+app.use('/performance', performanceRoutes);
 app.use('/auth', authRoutes);
 app.use('/payroll', payrollRoutes);
-app.use('/leave', leaveRoutes);
+app.use('/attendance', attendanceRoutes);
+app.use('/leaves', leaveRoutes);
 
-app.get('/', (req, res) => res.send('backserver is running')); // ✅ health check route
+app.get('/', (req, res) => res.send('backserver is running')); // checking if backend is running 
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));// running the backend on port 5000
     
