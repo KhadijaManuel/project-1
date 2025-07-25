@@ -3,7 +3,7 @@ const cors = require('cors'); // allows our Vue frontend to use and call this AP
 require('dotenv').config();  // uses the dotenv for db details and the port 
 
 
-//modular route files
+//modular route files and auth for protection onn the routes
 const authMiddleware = require('./middleware/authMiddleware');
 const employeeRoutes = require('./routes/employeeRoutes');
 const authRoutes = require('./routes/authRoutes');
@@ -12,6 +12,7 @@ const leaveRoutes = require('./routes/leaveRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');
 const performanceRoutes = require('./routes/performanceRoutes');
 
+
 const app = express();
 app.use(cors());             // browser blocking or something like that 
 app.use(express.json());     // parses incoming JSON bodies for the thunder client 
@@ -19,7 +20,7 @@ app.use(express.json());     // parses incoming JSON bodies for the thunder clie
 
 //routes
 app.use('/employees', employeeRoutes);
-app.use('/performance', performanceRoutes);
+app.use('/reviews', performanceRoutes);
 app.use('/auth', authRoutes);
 app.use('/payroll', payrollRoutes);
 app.use('/attendance', attendanceRoutes);

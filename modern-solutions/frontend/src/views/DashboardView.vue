@@ -1,7 +1,6 @@
 <template>
   <div class="flex h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
     <main class="flex-1 p-8 overflow-y-auto space-y-6">
-
       <!-- Summary Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <CardComp>
@@ -19,7 +18,9 @@
         <CardComp>
           <div class="p-4">
             <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Avg Attendance</h4>
-            <p class="mt-2 text-2xl font-semibold text-purple-600 dark:text-purple-400">90%</p>
+            <p class="mt-2 text-2xl font-semibold text-purple-600 dark:text-purple-400">
+              {{ averageAttendance }}%
+            </p>
           </div>
         </CardComp>
         <CardComp>
@@ -30,7 +31,38 @@
         </CardComp>
       </div>
 
-      <!-- Dashboard Overview -->
+      <!-- Performance Reviews Table -->
+      <CardComp>
+        <h3 class="text-lg font-semibold mb-3">Performance Reviews</h3>
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-200">
+              <th class="py-2 px-3 text-left">Employee</th>
+              <th class="py-2 px-3 text-left">Reviewer</th>
+              <th class="py-2 px-3 text-left">Period</th>
+              <th class="py-2 px-3 text-left">Score</th>
+              <th class="py-2 px-3 text-left">Comments</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="rev in reviews.slice(0,5)"
+              :key="rev.review_id"
+              class="border-b border-gray-200 dark:border-gray-700"
+            >
+              <td class="py-2 px-3">{{ rev.first_name }} {{ rev.last_name }}</td>
+              <td class="py-2 px-3">{{ rev.reviewer }}</td>
+              <td class="py-2 px-3">{{ rev.review_period }}</td>
+              <td class="py-2 px-3 font-semibold" :class="rev.score >= 7 ? 'text-green-500' : 'text-red-500'">
+                {{ rev.score }}
+              </td>
+              <td class="py-2 px-3">{{ rev.comments }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </CardComp>
+
+      <!-- Existing Overview and other sections -->
       <CardComp>
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-xl font-semibold">Dashboard Overview</h2>
@@ -40,102 +72,41 @@
           and streamline payroll—all from a single intuitive dashboard.
         </p>
 
-        <!-- Main Performance Chart -->
+        <!-- Performance Chart -->
         <div class="mb-6">
           <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">Performance Chart</h3>
           <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
             <canvas id="dashboardChart" class="w-full h-64"></canvas>
           </div>
         </div>
-
-        <!-- Task Reminders -->
-        <div>
-          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Task Reminders</h3>
-          <ul class="space-y-3">
-            <li class="flex justify-between bg-white dark:bg-gray-800 px-5 py-3 rounded-lg shadow hover:shadow-md">
-              <span class="font-medium">Review Payroll Summary</span>
-              <span class="text-xs text-gray-500 dark:text-gray-400">Due: Today</span>
-            </li>
-            <li class="flex justify-between bg-white dark:bg-gray-800 px-5 py-3 rounded-lg shadow hover:shadow-md">
-              <span class="font-medium">Approve Leave Requests</span>
-              <span class="text-xs text-gray-500 dark:text-gray-400">Due: Tomorrow</span>
-            </li>
-            <li class="flex justify-between bg-white dark:bg-gray-800 px-5 py-3 rounded-lg shadow hover:shadow-md">
-              <span class="font-medium">Update Employee Records</span>
-              <span class="text-xs text-gray-500 dark:text-gray-400">Due: Friday</span>
-            </li>
-          </ul>
-        </div>
       </CardComp>
 
-      <!-- Employees by Department -->
+      <!-- Attendance Table -->
       <CardComp>
-        <h3 class="text-lg font-semibold mb-3">Employees by Department</h3>
-        <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
-          <canvas id="departmentChart" class="w-full h-64"></canvas>
-        </div>
-      </CardComp>
-
-      <!-- Recent Hires -->
-      <CardComp>
-        <h3 class="text-lg font-semibold mb-3">Recent Hires</h3>
-        <ul class="divide-y divide-gray-200 dark:divide-gray-700">
-          <li class="flex items-center justify-between py-3">
-            <div>
-              <p class="font-medium">Zanele Khumalo</p>
-              <p class="text-xs text-gray-500">Marketing Specialist</p>
-            </div>
-            <span class="text-xs text-green-600 dark:text-green-400">Hired 2 days ago</span>
-          </li>
-          <li class="flex items-center justify-between py-3">
-            <div>
-              <p class="font-medium">Thabo Molefe</p>
-              <p class="text-xs text-gray-500">Quality Analyst</p>
-            </div>
-            <span class="text-xs text-green-600 dark:text-green-400">Hired last week</span>
-          </li>
-        </ul>
-      </CardComp>
-
-      <!-- Leave Requests -->
-      <CardComp>
-        <h3 class="text-lg font-semibold mb-3">Pending Leave Requests</h3>
+        <h3 class="text-lg font-semibold mb-3">Latest Attendance</h3>
         <table class="min-w-full text-sm">
           <thead>
-            <tr class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-200">
+            <tr class="bg-gray-100 dark:bg-gray-700">
               <th class="py-2 px-3 text-left">Employee</th>
-              <th class="py-2 px-3 text-left">Dates</th>
+              <th class="py-2 px-3 text-left">Date</th>
               <th class="py-2 px-3 text-left">Status</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="border-b border-gray-200 dark:border-gray-700">
-              <td class="py-2 px-3">Sipho Zulu</td>
-              <td class="py-2 px-3">22–25 July</td>
-              <td class="py-2 px-3 text-yellow-500 font-medium">Pending</td>
-            </tr>
-            <tr class="border-b border-gray-200 dark:border-gray-700">
-              <td class="py-2 px-3">Karabo Dlamini</td>
-              <td class="py-2 px-3">1–3 Aug</td>
-              <td class="py-2 px-3 text-yellow-500 font-medium">Pending</td>
+            <tr
+              v-for="att in attendanceData.slice(0,5)"
+              :key="att.attendance_id"
+              class="border-b border-gray-200 dark:border-gray-700"
+            >
+              <td class="py-2 px-3">{{ att.first_name }} {{ att.last_name }}</td>
+              <td class="py-2 px-3">{{ att.attendance_date }}</td>
+              <td class="py-2 px-3 font-medium" :class="att.status === 'Present' ? 'text-green-600' : 'text-red-600'">
+                {{ att.status }}
+              </td>
             </tr>
           </tbody>
         </table>
       </CardComp>
-
-      <!-- Announcements -->
-      <CardComp>
-        <h3 class="text-lg font-semibold mb-3">HR Announcements</h3>
-        <ul class="space-y-2 text-sm">
-          <li class="bg-blue-50 dark:bg-blue-900 p-3 rounded shadow">
-            🎉 <strong>Team Building Event</strong> – Friday 3 PM at the rooftop!
-          </li>
-          <li class="bg-green-50 dark:bg-green-900 p-3 rounded shadow">
-            ✅ <strong>Mid-Year Reviews</strong> completed successfully.
-          </li>
-        </ul>
-      </CardComp>
-
     </main>
   </div>
 </template>
@@ -172,11 +143,43 @@ Chart.register(
 export default {
   name: 'DashboardView',
   components: { CardComp },
+  data() {
+    return {
+      attendanceData: [],
+      reviews: [],
+      averageAttendance: 0
+    };
+  },
   mounted() {
     this.loadPerformanceChart();
-    this.loadDepartmentChart();
+    this.fetchAttendance();
+    this.fetchReviews();
   },
   methods: {
+    async fetchAttendance() {
+      try {
+        const res = await fetch('http://localhost:5000/attendance');
+        const data = await res.json();
+        this.attendanceData = data;
+        if (data.length > 0) {
+          const presentCount = data.filter(a => a.status.toLowerCase() === 'present').length;
+          this.averageAttendance = ((presentCount / data.length) * 100).toFixed(0);
+        }
+      } catch (err) {
+        console.error('Error fetching attendance:', err);
+      }
+    },
+
+    async fetchReviews() {
+      try {
+        const res = await fetch('http://localhost:5000/reviews');
+        const data = await res.json();
+        this.reviews = data;
+      } catch (err) {
+        console.error('Error fetching reviews:', err);
+      }
+    },
+
     async loadPerformanceChart() {
       try {
         const res = await fetch('/data/performance.json');
@@ -208,45 +211,13 @@ export default {
               title: { display: true, text: 'Q4 Performance Scores' }
             },
             scales: {
-              y: {
-                min: 0,
-                max: 10,
-                ticks: { stepSize: 1 }
-              }
+              y: { min: 0, max: 10, ticks: { stepSize: 1 } }
             }
           }
         });
       } catch (err) {
         console.error('Error loading performance data:', err);
       }
-    },
-    loadDepartmentChart() {
-      const ctx = document.getElementById('departmentChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Development', 'HR', 'Marketing', 'Sales', 'Finance'],
-          datasets: [{
-            label: 'Employees',
-            data: [4, 2, 3, 3, 1],
-            backgroundColor: 'rgba(59, 130, 246, 0.6)',
-            borderRadius: 8
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { display: false },
-            title: { display: true, text: 'Employees by Department' }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: { stepSize: 1 }
-            }
-          }
-        }
-      });
     }
   }
 };

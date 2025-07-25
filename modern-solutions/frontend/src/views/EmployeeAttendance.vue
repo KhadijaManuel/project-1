@@ -1,6 +1,5 @@
 <template>
   <div class="flex min-h-screen bg-gray-100 dark:bg-gray-900">
-
     <!-- Main content -->
     <main class="flex-1 p-8 overflow-y-auto max-w-6xl mx-auto">
       <CardComp>
@@ -96,17 +95,37 @@ export default {
   components: { CardComp },
   data() {
     return {
-      attendanceData: [],
-      selectedDate: '2025-07-29',
+      attendanceData: [], // grouped by employee
+      selectedDate: new Date().toISOString().split('T')[0], // default to today
       chartInstance: null,
     };
   },
   methods: {
     async fetchAttendanceData() {
       try {
-        const response = await fetch('/data/attendance.json');
-        const data = await response.json();
-        this.attendanceData = data.attendanceAndLeave || [];
+        const response = await fetch('http://localhost:5000/attendance'); // Adjust your backend API endpoint here
+        const records = await response.json();
+
+        // Group attendance records by employee
+        const grouped = {};
+
+        records.forEach(rec => {
+          const empId = rec.employee_id;
+          if (!grouped[empId]) {
+            grouped[empId] = {
+              employeeId: empId,
+              name: `${rec.first_name} ${rec.last_name}`,
+              attendance: [],
+              leaveRequests: [], // Placeholder if you add leave requests later
+            };
+          }
+          grouped[empId].attendance.push({
+            date: rec.attendance_date,
+            status: rec.status,
+          });
+        });
+
+        this.attendanceData = Object.values(grouped);
         this.$nextTick(() => this.renderChart());
       } catch (error) {
         console.error('Failed to load attendance data:', error);
@@ -175,5 +194,5 @@ export default {
 </script>
 
 <style scoped>
-/* Optional: CardComp styles assumed, else add padding/margin here */
+/* Scoped styles if needed */
 </style>

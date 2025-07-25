@@ -2,7 +2,7 @@
   <div class="about-hr-system">
     <h1>About This HR System</h1>
 
-    <!-- Example: AboutView.vue -->
+    <!-- AboutView.vue -->
 
     <section>
       <h2>System Features</h2>

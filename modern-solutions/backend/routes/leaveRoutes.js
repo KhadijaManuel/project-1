@@ -1,35 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { getAllLeaveRequests, addLeaveRequest, deleteLeaveRequest, updateLeaveRequest } = require('../controllers/leaveController');
 
-// const leaveController = require('../controllers/leaveController');
-router.get('/', getAllLeaveRequests);
-router.post('/', addLeaveRequest);
-router.delete('/:id', deleteLeaveRequest);  
-router.patch('/:id', updateLeaveRequest);
+// getting the requird modules
+const {getAllLeaveRequests,getLeaveByEmployee,addLeaveRequest,updateLeaveRequest,deleteLeaveRequest} = require('../controllers/leaveController');
 
-// importing leave data and adjusting the path and filename as needed
-const attendanceData = require('../../frontend/public/data/attendance.json');
-
-// getting all leaveRequests from my attendance data
-router.get('/info', (req,res)=> {
-    const leavelist = attendanceData.attendanceAndLeave.map(emp=>({
-        employeeId: emp.employeeId,
-        name: emp.name,
-        leaveRequests: emp.leaveRequests
-    }));
-    res.json(leavelist);
-})
-
-router.get('/', (req, res) => res.send('leavelist'));
-
-// router.get('/', (req, res) => {
-//     const leavelist = [
-//         {}
-//     ]
-// }
-
+//routes using crud 
+router.get('/', getAllLeaveRequests);       // GET all leave requests
+router.get('/:id', getLeaveByEmployee);     // GET leave requests for a a single employee
+router.post('/', addLeaveRequest);          // POST new leave request 
+router.patch('/:id', updateLeaveRequest);   // PATCH (update) leave request using patch since its the same as  put but updated 
+router.delete('/:id', deleteLeaveRequest);  // DELETE leave request
 
 module.exports = router;
-
-// http://localhost:5000/leave/info
