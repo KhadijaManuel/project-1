@@ -7,7 +7,9 @@
       <!-- Header -->
       <div class="mb-6 text-center">
         <h1 class="text-3xl font-extrabold text-blue-700 dark:text-blue-400">Welcome Back</h1>
-        <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm">Please enter your credentials to login.</p>
+        <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm">
+          Please enter your credentials to login.
+        </p>
       </div>
 
       <!-- Username -->
@@ -44,6 +46,15 @@
         Login
       </button>
 
+      <!-- Sign up Button -->
+      <button
+        type="button"
+        @click="$router.push('/signup')"
+        class="mt-4 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-100 font-semibold py-2 px-4 rounded-lg transition-colors duration-300"
+      >
+        Create an Account
+      </button>
+
       <!-- Error Message -->
       <p
         v-if="loginError"
@@ -66,11 +77,29 @@ export default {
     }
   },
   methods: {
-    handleLogin() {
-      if (this.username === 'admin' && this.password === '1234') {
-        this.$router.push('/dashboard')
-      } else {
-        this.loginError = 'Invalid username or password.'
+    async handleLogin() {
+      try {
+        const response = await fetch('http://localhost:5000/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: this.username,
+            password: this.password
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          this.loginError = data.message || 'Login failed';
+          return;
+        }
+
+        localStorage.setItem('authToken', data.token);
+        this.$router.push('/dashboard');
+      } catch (err) {
+        console.error('Login error:', err);
+        this.loginError = 'Server error. Please try again later.';
       }
     }
   }

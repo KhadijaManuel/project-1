@@ -5,46 +5,52 @@ import DashboardView from '@/views/DashboardView.vue'
 import LoginView from '@/views/LoginView.vue'
 import EmployeesView from '@/views/EmployeesView.vue'
 import LeaveView from '@/views/LeaveView.vue'
-import PerformanceReviewTable from '@/components/PerformanceReviewTable.vue'
 import PerformanceReviewView from '@/views/PerformanceReviewView.vue'
+
+// ✅ Import the Signup page
+import SignupView from '@/views/signup.vue'
 
 const routes = [
   {
-path:'/',
-name:'login',
-component:LoginView
+    path: '/',
+    name: 'login',
+    component: LoginView
   },
   {
-    path:'/payroll',
-    name:'payroll',
+    path: '/signup',
+    name: 'signup',
+    component: SignupView
+  },
+  {
+    path: '/payroll',
+    name: 'payroll',
     component: PayRoll
   },
   {
-    path:'/attendance',
-    name:'attendance',
-    component:Attendance
+    path: '/attendance',
+    name: 'attendance',
+    component: Attendance
   },
   {
     path: '/dashboard',
     name: 'dashboard',
-    component:DashboardView
+    component: DashboardView
   },
   {
-  path:'/employees',
-  name:'employees',
-  component:EmployeesView
+    path: '/employees',
+    name: 'employees',
+    component: EmployeesView
   },
   {
-    path:'/leave',
-    name:'leave',
-    component:LeaveView
+    path: '/leave',
+    name: 'leave',
+    component: LeaveView
   },
   {
-    path:'/performance',
-    name:'performance',
-    component:PerformanceReviewView
-  },
-  
+    path: '/performance',
+    name: 'performance',
+    component: PerformanceReviewView
+  }
 ]
 
 const router = createRouter({
