@@ -1,4 +1,4 @@
-const db = require('../models/db');
+const db = require('../models/db'); // Ensure this path is correct for your database connection
 
 // GET leave requests for all employees
 exports.getAllLeaveRequests = async (req, res) => {
@@ -17,9 +17,9 @@ exports.getAllLeaveRequests = async (req, res) => {
   }
 };
 
-// GET leave requests by employee_id just some extra stuff 
+// GET leave requests by employee_id (optional, good for specific employee views)
 exports.getLeaveByEmployee = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; // This 'id' is employee_id here
   try {
     const [rows] = await db.query(`
       SELECT l.leave_id, l.employee_id, e.first_name, e.last_name, 
@@ -45,8 +45,15 @@ exports.addLeaveRequest = async (req, res) => {
   const { employee_id, leave_date, reason, status } = req.body;
   try {
     if (!employee_id || !leave_date || !reason || !status) {
-      return res.status(400).json({ message: 'Missing required fields.' });
+      return res.status(400).json({ message: 'Missing required fields: employee_id, leave_date, reason, status.' });
     }
+    // You might want to validate employee_id exists in 'employees' table first
+    // For example:
+    // const [employeeExists] = await db.query('SELECT employee_id FROM employees WHERE employee_id = ?', [employee_id]);
+    // if (employeeExists.length === 0) {
+    //   return res.status(400).json({ message: 'Invalid Employee ID.' });
+    // }
+
     await db.query(
       `INSERT INTO leave_requests (employee_id, leave_date, reason, status) VALUES (?, ?, ?, ?)`,
       [employee_id, leave_date, reason, status]
@@ -54,13 +61,13 @@ exports.addLeaveRequest = async (req, res) => {
     res.status(201).json({ message: 'Leave request added successfully.' });
   } catch (err) {
     console.error('Error adding leave request:', err);
-    res.status(500).json({ message: 'Server error while adding leave request.' });
+    res.status(500).json({ message: 'Server error while adding leave request.', error: err.message });
   }
 };
 
-//UPDATE leave request by leave_id
+// UPDATE leave request by leave_id
 exports.updateLeaveRequest = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; // This 'id' is leave_id here
   const { leave_date, reason, status } = req.body;
 
   try {
@@ -69,9 +76,10 @@ exports.updateLeaveRequest = async (req, res) => {
       return res.status(404).json({ message: 'Leave request not found.' });
     }
 
-    const updatedLeaveDate = leave_date || existing[0].leave_date;
-    const updatedReason = reason || existing[0].reason;
-    const updatedStatus = status || existing[0].status;
+    // Use coalesce/nullish coalescing to allow partial updates
+    const updatedLeaveDate = leave_date ?? existing[0].leave_date;
+    const updatedReason = reason ?? existing[0].reason;
+    const updatedStatus = status ?? existing[0].status;
 
     await db.query(
       `UPDATE leave_requests SET leave_date = ?, reason = ?, status = ? WHERE leave_id = ?`,
@@ -81,21 +89,22 @@ exports.updateLeaveRequest = async (req, res) => {
     res.json({ message: 'Leave request updated successfully.' });
   } catch (err) {
     console.error('Error updating leave request:', err);
-    res.status(500).json({ message: 'Server error while updating leave request.' });
+    res.status(500).json({ message: 'Server error while updating leave request.', error: err.message });
   }
 };
 
 // DELETE leave request by leave_id
 exports.deleteLeaveRequest = async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; // This 'id' is leave_id here
   try {
     const [result] = await db.query(`DELETE FROM leave_requests WHERE leave_id = ?`, [id]);
-    if (result.affectedRows === 0) {
+    if (result.affectedRows === 0) { // Check if any rows were actually deleted
       return res.status(404).json({ message: 'Leave request not found.' });
     }
-    res.json({ message: 'Leave request deleted successfully.' });
+    // Return 204 No Content for successful deletion, or 200 with a message
+    res.status(204).send(); // Or res.json({ message: 'Leave request deleted successfully.' });
   } catch (err) {
-    console.error(' Error deleting leave request:', err);
-    res.status(500).json({ message: 'Server error while deleting leave request.' });
+    console.error('Error deleting leave request:', err);
+    res.status(500).json({ message: 'Server error while deleting leave request.', error: err.message });
   }
 };

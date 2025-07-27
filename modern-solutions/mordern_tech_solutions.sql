@@ -12,7 +12,8 @@ CREATE TABLE employees (
   role VARCHAR(50),
   salary DECIMAL(10,2),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+);s
+
 INSERT INTO employees (first_name, last_name, email, role, salary)
 VALUES
 ('Sibongile', 'Nkosi', 'sibongile.nkosi@moderntech.com', 'Software Engineer', 70000.00),
@@ -164,6 +165,7 @@ CREATE TABLE leave_requests (
   FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 );
 -- leave
+
 -- Leave Requests for Employee 1
 INSERT INTO leave_requests (employee_id, leave_date, reason, status) VALUES
 (1, '2025-07-22', 'Sick Leave', 'Approved'),
@@ -206,6 +208,29 @@ INSERT INTO leave_requests (employee_id, leave_date, reason, status) VALUES
 -- Leave Requests for Employee 10
 INSERT INTO leave_requests (employee_id, leave_date, reason, status) VALUES
 (10, '2024-12-03', 'Vacation', 'Pending');
+
+CREATE TABLE performance_reviews (
+  review_id INT AUTO_INCREMENT PRIMARY KEY,
+  employee_id INT NOT NULL,
+  review_period VARCHAR(50),
+  reviewer VARCHAR(100),
+  score INT,
+  comments TEXT
+);
+
+INSERT INTO performance_reviews (employee_id, review_period, reviewer, score, comments) VALUES
+(1, '2024 Q4', 'Lungile Moyo', 9, 'Consistently delivers high-quality work and shows leadership potential.'),
+(2, '2024 Q4', 'Thabo Molefe', 8, 'Excellent management skills and team support.'),
+(3, '2024 Q4', 'Sibongile Nkosi', 8, 'Pays attention to detail and meets deadlines.'),
+(4, '2024 Q4', 'Zanele Khumalo', 7, 'Good sales performance, can improve on follow-ups.'),
+(5, '2024 Q4', 'Keshav Naidoo', 8, 'Creative marketing ideas and strong teamwork.'),
+(6, '2024 Q4', 'Naledi Moeketsi', 7, 'Strong design skills and attention to user experience.'),
+(7, '2024 Q4', 'Sipho Zulu', 8, 'Excellent at automating processes and ensuring system reliability.'),
+(8, '2024 Q4', 'Zanele Khumalo', 7, 'Creative content ideas and good collaboration with marketing.'),
+(9, '2024 Q4', 'Fatima Patel', 8, 'Accurate financial reporting and strong analytical skills.'),
+(10, '2024 Q4', 'Karabo Dlamini', 9, 'Excellent customer support leadership and problem-solving.');
+
+
 
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'liso1707';
 

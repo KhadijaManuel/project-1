@@ -224,5 +224,4 @@ export default {
 </script>
 
 <style scoped>
-/* Add optional custom styling if desired */
 </style>

@@ -1,34 +1,33 @@
 const express = require('express');
-const cors = require('cors'); // allows our Vue frontend to use and call this API
-require('dotenv').config();  // uses the dotenv for db details and the port 
+const cors = require('cors');
+require('dotenv').config(); // Loads environment variables from a .env file
 
-
-//modular route files and auth for protection onn the routes
-const authMiddleware = require('./middleware/authMiddleware');
+// Modular route files and authentication middleware
+const authMiddleware = require('./middleware/authMiddleware'); // Make sure this path is correct
 const employeeRoutes = require('./routes/employeeRoutes');
 const authRoutes = require('./routes/authRoutes');
 const payrollRoutes = require('./routes/payrollRoutes');
-const leaveRoutes = require('./routes/leaveRoutes');
+const leaveRoutes = require('./routes/leaveRoutes'); // Make sure this path is correct
 const attendanceRoutes = require('./routes/attendanceRoutes');
 const performanceRoutes = require('./routes/performanceRoutes');
 
 
 const app = express();
-app.use(cors());             // browser blocking or something like that 
-app.use(express.json());     // parses incoming JSON bodies for the thunder client 
+app.use(cors());             // Enable CORS for cross-origin requests from your frontend
+app.use(express.json());     // Middleware to parse incoming JSON request bodies
 
-
-//routes
+// Define API routes. The first argument is the base path.
 app.use('/employees', employeeRoutes);
 app.use('/reviews', performanceRoutes);
 app.use('/auth', authRoutes);
 app.use('/payroll', payrollRoutes);
 app.use('/attendance', attendanceRoutes);
-app.use('/leaves', require('./routes/leaveRoutes'));
+app.use('/leaves', leaveRoutes); // Mount the leave routes at the /leaves path
 
 
-app.get('/', (req, res) => res.send('backserver is running')); // checking if backend is running 
+// Basic route to check if backend is running
+app.get('/', (req, res) => res.send('Backend server is running'));
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));// running the backend on port 5000
-    
+// Start the server
+const PORT = process.env.PORT || 5000; // Use port from .env or default to 5000
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
