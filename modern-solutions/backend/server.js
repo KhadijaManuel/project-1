@@ -24,7 +24,8 @@ app.use('/reviews', performanceRoutes);
 app.use('/auth', authRoutes);
 app.use('/payroll', payrollRoutes);
 app.use('/attendance', attendanceRoutes);
-app.use('/leaves', leaveRoutes);
+app.use('/leaves', require('./routes/leaveRoutes'));
+
 
 app.get('/', (req, res) => res.send('backserver is running')); // checking if backend is running 
 

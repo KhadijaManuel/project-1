@@ -1,7 +1,9 @@
+// controllers/performanceController.js
 const db = require('../models/db');
 
-// Get all performance reviews
+// ✅ Get all performance reviews
 exports.getAllReviews = async (req, res) => {
+  console.log('[DEBUG] GET /reviews called');
   try {
     const [rows] = await db.query(
       `SELECT pr.review_id, pr.employee_id, e.first_name, e.last_name,
@@ -9,36 +11,50 @@ exports.getAllReviews = async (req, res) => {
        FROM performance_reviews pr
        JOIN employees e ON pr.employee_id = e.employee_id`
     );
+    console.log('[DEBUG] reviews fetched:', rows.length);
     res.json(rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error while fetching reviews' });
+    console.error('[ERROR] getAllReviews failed:', err);
+    res.status(500).json({
+      message: 'Server error while fetching reviews',
+      error: err.message
+    });
   }
 };
 
-// Add a new performance review
+// ✅ Add a new performance review
 exports.addReview = async (req, res) => {
   const { employee_id, review_period, reviewer, score, comments } = req.body;
+
   try {
+    console.log('[DEBUG] POST /reviews body:', req.body);
     await db.query(
       `INSERT INTO performance_reviews 
-        (employee_id, employee_name, review_period, reviewer, score, comments) 
-       VALUES (?, (SELECT CONCAT(first_name,' ',last_name) FROM employees WHERE employee_id=?), ?, ?, ?, ?)`,
-      [employee_id, employee_id, review_period, reviewer, score, comments]
+         (employee_id, review_period, reviewer, score, comments)
+       VALUES (?, ?, ?, ?, ?)`,
+      [employee_id, review_period, reviewer, score, comments]
     );
     res.json({ message: 'Performance review added successfully' });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error while adding review' });
+    console.error('[ERROR] addReview failed:', err);
+    res.status(500).json({
+      message: 'Server error while adding review',
+      error: err.message
+    });
   }
 };
 
-// deleting a review (permanently deletes from DB)
+// ✅ Delete a review
 exports.deleteReview = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const [existing] = await db.query('SELECT * FROM performance_reviews WHERE review_id = ?', [id]);
+    console.log('[DEBUG] DELETE /reviews/:id', id);
+    const [existing] = await db.query(
+      'SELECT * FROM performance_reviews WHERE review_id = ?',
+      [id]
+    );
+
     if (existing.length === 0) {
       return res.status(404).json({ message: 'Review not found.' });
     }
@@ -46,42 +62,56 @@ exports.deleteReview = async (req, res) => {
     await db.query('DELETE FROM performance_reviews WHERE review_id = ?', [id]);
     res.json({ message: 'Performance review permanently deleted.' });
   } catch (err) {
-    console.error('deleteReview error:', err);
-    res.status(500).json({ message: 'Server error while deleting review' });
+    console.error('[ERROR] deleteReview failed:', err);
+    res.status(500).json({
+      message: 'Server error while deleting review',
+      error: err.message
+    });
   }
 };
 
-// Update a performance review
+// ✅ Update a review
 exports.updateReview = async (req, res) => {
   const { id } = req.params;
   const { review_period, reviewer, score, comments } = req.body;
 
   try {
-    // Check if review exists
-    const [existing] = await db.query('SELECT * FROM performance_reviews WHERE review_id = ?', [id]);
+    console.log('[DEBUG] PUT /reviews/:id', id, req.body);
+    const [existing] = await db.query(
+      'SELECT * FROM performance_reviews WHERE review_id = ?',
+      [id]
+    );
+
     if (existing.length === 0) {
       return res.status(404).json({ message: 'Performance review not found.' });
     }
 
-    // Update only provided fields, keep others as they are
     const updatedReview = {
       review_period: review_period ?? existing[0].review_period,
       reviewer: reviewer ?? existing[0].reviewer,
       score: score ?? existing[0].score,
-      comments: comments ?? existing[0].comments
+      comments: comments ?? existing[0].comments,
     };
 
     await db.query(
-      `UPDATE performance_reviews 
-       SET review_period = ?, reviewer = ?, score = ?, comments = ? 
+      `UPDATE performance_reviews
+       SET review_period = ?, reviewer = ?, score = ?, comments = ?
        WHERE review_id = ?`,
-      [updatedReview.review_period, updatedReview.reviewer, updatedReview.score, updatedReview.comments, id]
+      [
+        updatedReview.review_period,
+        updatedReview.reviewer,
+        updatedReview.score,
+        updatedReview.comments,
+        id,
+      ]
     );
 
     res.json({ message: 'Performance review updated successfully.' });
   } catch (err) {
-    console.error('updateReview error:', err);
-    res.status(500).json({ message: 'Server error while updating review' });
+    console.error('[ERROR] updateReview failed:', err);
+    res.status(500).json({
+      message: 'Server error while updating review',
+      error: err.message
+    });
   }
 };
-

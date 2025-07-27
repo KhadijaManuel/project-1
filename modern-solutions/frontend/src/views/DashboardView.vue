@@ -169,16 +169,16 @@ export default {
         console.error('Error fetching attendance:', err);
       }
     },
-
-    async fetchReviews() {
-      try {
-        const res = await fetch('http://localhost:5000/reviews');
-        const data = await res.json();
-        this.reviews = data;
-      } catch (err) {
-        console.error('Error fetching reviews:', err);
-      }
-    },
+async fetchReviews() {
+  try {
+    const res = await fetch('http://localhost:5000/reviews');
+    const data = await res.json();
+    this.reviews = Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.error('Error fetching reviews:', err);
+    this.reviews = [];
+  }
+},
 
     async loadPerformanceChart() {
       try {

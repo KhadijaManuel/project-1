@@ -206,3 +206,8 @@ INSERT INTO leave_requests (employee_id, leave_date, reason, status) VALUES
 -- Leave Requests for Employee 10
 INSERT INTO leave_requests (employee_id, leave_date, reason, status) VALUES
 (10, '2024-12-03', 'Vacation', 'Pending');
+
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'liso1707';
+
+
+
