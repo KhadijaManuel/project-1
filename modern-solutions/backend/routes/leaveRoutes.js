@@ -10,7 +10,7 @@ const {
   deleteLeaveRequest
 } = require('../controllers/leaveController');
 
-// You might want an authentication middleware here:
+
 // const authenticateToken = require('../middleware/authMiddleware');
 
 // Define routes for leave management
@@ -20,10 +20,6 @@ router.post('/', addLeaveRequest);                // POST new leave request
 router.patch('/:id', updateLeaveRequest);         // PATCH (update) leave request (ID is leave_id)
 router.delete('/:id', deleteLeaveRequest);        // DELETE leave request (ID is leave_id)
 
-// Example with authentication middleware (uncomment and ensure middleware exists)
-// router.get('/', authenticateToken, getAllLeaveRequests);
-// router.post('/', authenticateToken, addLeaveRequest);
-// router.delete('/:id', authenticateToken, deleteLeaveRequest);
-// router.patch('/:id', authenticateToken, updateLeaveRequest);
+
 
 module.exports = router;

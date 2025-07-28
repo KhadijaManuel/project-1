@@ -1,6 +1,6 @@
 const db = require('../models/db');
 
-// Utility: Validates email ends with @moderntech.com
+// validates email ends with @moderntech.com
 const isValidEmail = (email) =>
   /^[^\s@]+@moderntech\.com$/.test(email);
 
@@ -19,12 +19,12 @@ exports.getAllEmployees = async (req, res) => {
 exports.addEmployee = async (req, res) => {
   const { first_name, last_name, email, role, salary } = req.body;
 
-  // Ensure all fields are present
+  
   if (!first_name || !last_name || !email || !role || salary == null) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
-  // Validate email format and domain
+  
   if (!isValidEmail(email)) {
     return res.status(400).json({ message: 'Email must end with @moderntech.com' });
   }
@@ -52,13 +52,13 @@ exports.addEmployee = async (req, res) => {
   }
 };
 
-// Update existing employee
+// update existing employee
 exports.updateEmployee = async (req, res) => {
   const { id } = req.params;
   const { first_name, last_name, email, role, salary } = req.body;
 
   try {
-    // Check if employee exists
+    // vheck if employee exists
     const [existingRows] = await db.query('SELECT * FROM employees WHERE employee_id = ?', [id]);
     if (existingRows.length === 0) {
       return res.status(404).json({ message: 'Employee not found' });
@@ -66,14 +66,13 @@ exports.updateEmployee = async (req, res) => {
 
     const existing = existingRows[0];
 
-    // Prepare updated values
+    // prepare updated values
     const updatedFirstName = first_name ?? existing.first_name;
     const updatedLastName = last_name ?? existing.last_name;
     const updatedEmail = email ?? existing.email;
     const updatedRole = role ?? existing.role;
     const updatedSalary = salary ?? existing.salary;
-
-    // If email is changed, validate and check for duplicates
+ // If email is changed, validate and check for duplicates
     if (email && email !== existing.email) {
       if (!isValidEmail(email)) {
         return res.status(400).json({ message: 'Email must end with @moderntech.com' });
@@ -88,7 +87,7 @@ exports.updateEmployee = async (req, res) => {
       }
     }
 
-    // Perform update
+   
     await db.query(
       'UPDATE employees SET first_name = ?, last_name = ?, email = ?, role = ?, salary = ? WHERE employee_id = ?',
       [updatedFirstName, updatedLastName, updatedEmail, updatedRole, updatedSalary, id]
@@ -101,7 +100,7 @@ exports.updateEmployee = async (req, res) => {
   }
 };
 
-// Delete employee by ID
+// selete employee by ID
 exports.deleteEmployee = async (req, res) => {
   const { id } = req.params;
 

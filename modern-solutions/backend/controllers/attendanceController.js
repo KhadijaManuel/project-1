@@ -1,6 +1,6 @@
 const db = require('../models/db');
 
-// GET attendance for all employees
+
 exports.getAllAttendance = async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -16,7 +16,7 @@ exports.getAllAttendance = async (req, res) => {
   }
 };
 
-// Add attendance record
+
 exports.addAttendance = async (req, res) => {
   const { employee_id, attendance_date, status } = req.body;
   try {
@@ -31,7 +31,7 @@ exports.addAttendance = async (req, res) => {
   }
 };
 
-// Update attendance record, with Date Restriction (last 3d)
+
 exports.updateAttendance = async (req, res) => {
   const { id } = req.params;
   const { attendance_date, status } = req.body;
@@ -66,7 +66,7 @@ exports.updateAttendance = async (req, res) => {
   }
 };
 
-// Delete attendance record
+
 exports.deleteAttendance = async (req, res) => {
   const { id } = req.params;
   try {

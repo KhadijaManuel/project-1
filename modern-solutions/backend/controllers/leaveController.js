@@ -19,7 +19,7 @@ exports.getAllLeaveRequests = async (req, res) => {
 
 // GET leave requests by employee_id 
 exports.getLeaveByEmployee = async (req, res) => {
-  const { id } = req.params; // This 'id' is employee_id here
+  const { id } = req.params; 
   try {
     const [rows] = await db.query(`
       SELECT l.leave_id, l.employee_id, e.first_name, e.last_name, 
@@ -61,7 +61,7 @@ exports.addLeaveRequest = async (req, res) => {
 
 // UPDATE leave request by leave_id
 exports.updateLeaveRequest = async (req, res) => {
-  const { id } = req.params; // This 'id' is leave_id here
+  const { id } = req.params; 
   const { leave_date, reason, status } = req.body;
 
   try {
@@ -70,7 +70,7 @@ exports.updateLeaveRequest = async (req, res) => {
       return res.status(404).json({ message: 'Leave request not found.' });
     }
 
-    // Use coalesce/nullish coalescing to allow partial updates
+    
     const updatedLeaveDate = leave_date ?? existing[0].leave_date;
     const updatedReason = reason ?? existing[0].reason;
     const updatedStatus = status ?? existing[0].status;
@@ -89,14 +89,14 @@ exports.updateLeaveRequest = async (req, res) => {
 
 // DELETE leave request by leave_id
 exports.deleteLeaveRequest = async (req, res) => {
-  const { id } = req.params; // This 'id' is leave_id here
+  const { id } = req.params; 
   try {
     const [result] = await db.query(`DELETE FROM leave_requests WHERE leave_id = ?`, [id]);
     if (result.affectedRows === 0) { // Check if any rows were actually deleted
       return res.status(404).json({ message: 'Leave request not found.' });
     }
-    // Return 204 No Content for successful deletion, or 200 with a message
-    res.status(204).send(); // Or res.json({ message: 'Leave request deleted successfully.' });
+    
+    res.status(204).send();
   } catch (err) {
     console.error('Error deleting leave request:', err);
     res.status(500).json({ message: 'Server error while deleting leave request.', error: err.message });

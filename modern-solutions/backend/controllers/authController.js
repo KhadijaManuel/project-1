@@ -3,15 +3,7 @@ const db = require('../models/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-/*
-  REGISTER a new user using POST
-  Expects: { username, password, employee_id } in the format 
-  {
-  "username": "john_doe",
-  "password": "secret123",
-  "employee_id": "002"
-}
- */
+
 exports.registerUser = async (req, res) => {
   const { username, password, employee_id } = req.body;
 
@@ -43,10 +35,7 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-/**
- * LOGIN user
- * Returns: JWT token when it is successful and add the data in the database 
- */
+
 exports.loginUser = async (req, res) => {
   const { username, password } = req.body;
 

@@ -1,134 +1,138 @@
 <template>
-  <div class="p-8 space-y-10 bg-gray-50 dark:bg-gray-900 min-h-screen">
-    <!-- Summary Cards Row -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-      <CardComp class="flex items-center space-x-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
-        <div class="p-3 bg-blue-100 dark:bg-blue-700 rounded-full">
-          <span class="text-blue-600 dark:text-white text-3xl">👨‍💼</span>
-        </div>
+  <div class="p-6 space-y-8">
+    <!-- Top Stat Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+      <!-- Employees -->
+      <CardComp v-if="employees.length" class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6 flex items-center justify-between">
         <div>
-          <p class="text-sm text-gray-500 dark:text-gray-300">Employees</p>
-          <p class="text-2xl font-extrabold text-gray-900 dark:text-white">{{ employees.length }}</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Employees</p>
+          <p class="text-3xl font-semibold text-gray-900 dark:text-white">{{ employees.length }}</p>
         </div>
+        <span class="text-blue-500 text-2xl">👨‍💼</span>
       </CardComp>
 
-      <CardComp class="flex items-center space-x-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
-        <div class="p-3 bg-green-100 dark:bg-green-700 rounded-full">
-          <span class="text-green-600 dark:text-white text-3xl">📋</span>
-        </div>
+      <!-- Attendance -->
+      <CardComp v-if="attendanceData.length" class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6 flex items-center justify-between">
         <div>
-          <p class="text-sm text-gray-500 dark:text-gray-300">Attendance Records</p>
-          <p class="text-2xl font-extrabold text-gray-900 dark:text-white">{{ attendanceData.length }}</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Attendance Records</p>
+          <p class="text-3xl font-semibold text-gray-900 dark:text-white">{{ attendanceData.length }}</p>
         </div>
+        <span class="text-green-500 text-2xl">📋</span>
       </CardComp>
 
-      <CardComp class="flex items-center space-x-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
-        <div class="p-3 bg-yellow-100 dark:bg-yellow-700 rounded-full">
-          <span class="text-yellow-600 dark:text-white text-3xl">📈</span>
-        </div>
+      <!-- Performance -->
+      <CardComp v-if="performanceReviews.length" class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6 flex items-center justify-between">
         <div>
-          <p class="text-sm text-gray-500 dark:text-gray-300">Performance Reviews</p>
-          <p class="text-2xl font-extrabold text-gray-900 dark:text-white">{{ performanceReviews.length }}</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Performance Reviews</p>
+          <p class="text-3xl font-semibold text-gray-900 dark:text-white">{{ performanceReviews.length }}</p>
         </div>
+        <span class="text-yellow-500 text-2xl">📈</span>
       </CardComp>
 
-      <CardComp class="flex items-center space-x-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
-        <div class="p-3 bg-purple-100 dark:bg-purple-700 rounded-full">
-          <span class="text-purple-600 dark:text-white text-3xl">💰</span>
-        </div>
+      <!-- Leave Requests -->
+      <CardComp v-if="leaveRequests.length" class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6 flex items-center justify-between">
         <div>
-          <p class="text-sm text-gray-500 dark:text-gray-300">Total Monthly Payroll</p>
-          <p class="text-2xl font-extrabold text-gray-900 dark:text-white">R{{ totalPayroll.toLocaleString() }}</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Leave Requests</p>
+          <p class="text-3xl font-semibold text-gray-900 dark:text-white">{{ leaveRequests.length }}</p>
         </div>
+        <span class="text-red-500 text-2xl">📝</span>
+      </CardComp>
+
+      <!-- Total Payroll -->
+      <CardComp v-if="employees.length" class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6 flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Total Payroll (ZAR)</p>
+          <p class="text-3xl font-semibold text-gray-900 dark:text-white">R {{ totalPayroll }}</p>
+        </div>
+        <span class="text-purple-500 text-2xl">💰</span>
       </CardComp>
     </div>
 
-    <!-- Middle Section: Attendance Progress & Radar Chart -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      
-      <CardComp class="flex flex-col items-center justify-center p-8 bg-white dark:bg-gray-800 rounded-xl shadow-md">
-        <p class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Average Attendance</p>
-        <svg class="w-40 h-40" viewBox="0 0 36 36">
-          <path
-            class="text-gray-200 dark:text-gray-700"
-            stroke-width="3"
-            fill="none"
-            stroke="currentColor"
-            d="M18 2.0845
-               a 15.9155 15.9155 0 0 1 0 31.831
-               a 15.9155 15.9155 0 0 1 0 -31.831"
-          />
-          <path
-            class="text-indigo-500"
-            stroke-width="3"
-            fill="none"
-            stroke-linecap="round"
-            :stroke-dasharray="attendanceDashArray"
-            stroke="currentColor"
-            d="M18 2.0845
-               a 15.9155 15.9155 0 0 1 0 31.831
-               a 15.9155 15.9155 0 0 1 0 -31.831"
-          />
-          <text
-            x="18"
-            y="20.35"
-            class="text-3xl font-bold fill-current text-indigo-600 dark:text-indigo-400"
-            text-anchor="middle"
-          >{{ averageAttendance }}%</text>
-        </svg>
+    <!-- Quick Actions -->
+    <div class="flex flex-wrap gap-4 my-6">
+      <router-link
+        to="/employees"
+        class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+      >
+        ➕ Add Employee
+      </router-link>
+      <router-link
+        to="/leave"
+        class="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"
+      >
+        🗓️ Request Leave
+      </router-link>
+    </div>
+
+    <!-- Charts & Attendance Table -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Performance Line Chart -->
+      <CardComp class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md">
+        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Performance Chart</h3>
+        <canvas ref="chartRef" class="w-full h-64"></canvas>
       </CardComp>
 
-      <!-- Performance Radar Chart -->
-      <CardComp class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md col-span-2">
-        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6">Performance Overview</h3>
-        <canvas ref="radarChart" class="w-full h-64"></canvas>
+      <!-- Recent Attendance Table -->
+      <CardComp class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md lg:col-span-1 lg:row-span-1">
+        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Recent Attendance</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm text-left">
+            <thead>
+              <tr class="border-b dark:border-gray-700">
+                <th class="py-2 px-4 text-gray-600 dark:text-gray-300">Employee</th>
+                <th class="py-2 px-4 text-gray-600 dark:text-gray-300">Date</th>
+                <th class="py-2 px-4 text-gray-600 dark:text-gray-300">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(att, index) in attendanceData.slice(0, 5)"
+                :key="index"
+                class="hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+              >
+                <td class="py-2 px-4 text-gray-800 dark:text-gray-100">
+                  {{ att.first_name }} {{ att.last_name }}
+                </td>
+                <td class="py-2 px-4 text-gray-700 dark:text-gray-300">
+                  {{ formatDate(att.attendance_date) }}
+                </td>
+                <td class="py-2 px-4">
+                  <span
+                    :class="{
+                      'text-green-600': att.status === 'Present',
+                      'text-red-600': att.status === 'Absent',
+                      'text-yellow-600': att.status === 'Leave'
+                    }"
+                  >
+                    {{ att.status }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </CardComp>
+
+      <!-- Attendance Doughnut Chart -->
+      <CardComp class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md lg:col-span-1 lg:row-span-1">
+        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Attendance Overview</h3>
+        <canvas ref="attendanceChartRef" class="w-full h-64"></canvas>
       </CardComp>
     </div>
 
-    <!-- Recent Leave Requests -->
-    <CardComp class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
-      <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Recent Leave Requests</h3>
-      <ul>
-        <li
-          v-for="leave in leaveRequests.slice(0, 6)"
-          :key="leave.id"
-          class="flex justify-between py-2 border-b dark:border-gray-700"
-        >
-          <span>{{ leave.first_name }} {{ leave.last_name }}</span>
-          <span
-            :class="{
-              'px-3 py-1 rounded-full text-xs font-semibold': true,
-              'bg-yellow-300 text-yellow-900': leave.status === 'Pending',
-              'bg-green-300 text-green-900': leave.status === 'Approved',
-              'bg-red-300 text-red-900': leave.status === 'Rejected',
-            }"
-          >
-            {{ leave.status }}
-          </span>
-        </li>
-      </ul>
-    </CardComp>
-
-    <!-- Featured Employees with Avatars -->
+    <!-- Employee Cards -->
     <div>
-      <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6">Featured Employees</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Featured Employees</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         <CardComp
           v-for="(emp, i) in employees.slice(0, 6)"
           :key="i"
-          class="flex items-center space-x-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg"
+          class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow hover:shadow-lg transition"
         >
-          <div
-            class="w-12 h-12 flex items-center justify-center rounded-full bg-indigo-600 text-white font-semibold text-lg uppercase"
-          >
-            {{ emp.first_name.charAt(0) }}{{ emp.last_name.charAt(0) }}
-          </div>
-          <div>
-            <h4 class="text-lg font-semibold text-gray-800 dark:text-white">
-              {{ emp.first_name }} {{ emp.last_name }}
-            </h4>
-            <p class="text-sm text-gray-500 dark:text-gray-400">{{ emp.role || 'N/A' }}</p>
-          </div>
+          <h4 class="text-lg font-semibold text-gray-800 dark:text-white">
+            {{ emp.first_name }} {{ emp.last_name }}
+          </h4>
+          <p class="text-sm text-gray-500 dark:text-gray-400">{{ emp.role || 'N/A' }}</p>
         </CardComp>
       </div>
     </div>
@@ -137,9 +141,8 @@
 
 <script>
 import CardComp from '@/components/CardComp.vue';
-import { Chart, RadarController, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
-
-Chart.register(RadarController, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 export default {
   components: { CardComp },
@@ -149,108 +152,153 @@ export default {
       attendanceData: [],
       performanceReviews: [],
       leaveRequests: [],
-      totalPayroll: 0,
-      averageAttendance: 0,
-      attendanceDashArray: '0, 100',
-      radarChart: null,
+      performanceChart: null,
+      attendanceChart: null,
     };
   },
+  computed: {
+    totalPayroll() {
+      return this.employees
+        .reduce((sum, e) => sum + parseFloat(e.salary || 0), 0)
+        .toFixed(2);
+    },
+  },
   mounted() {
-    this.loadData();
+    this.fetchEmployees();
+    this.fetchAttendance();
+    this.fetchReviewsAndLoadChart();
+    this.fetchLeaveRequests();
   },
   methods: {
-    async loadData() {
-      await Promise.all([
-        this.fetchEmployees(),
-        this.fetchAttendance(),
-        this.fetchReviews(),
-        this.fetchLeaveRequests(),
-      ]);
-      this.updateAttendanceProgress();
-      this.initRadarChart();
+    // Format dates as DD MMM YYYY
+    formatDate(dateStr) {
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      return new Date(dateStr).toLocaleDateString(undefined, options);
     },
+
     async fetchEmployees() {
       try {
         const res = await fetch('http://localhost:5000/employees');
         this.employees = await res.json();
-        this.totalPayroll = this.employees.reduce((sum, e) => sum + (e.salary || 0), 0);
-      } catch (e) {
-        console.error(e);
+      } catch (err) {
+        console.error('Error fetching employees:', err);
       }
     },
+
     async fetchAttendance() {
       try {
         const res = await fetch('http://localhost:5000/attendance');
         const data = await res.json();
-        this.attendanceData = data;
-        const presentCount = data.filter(a => a.status.toLowerCase() === 'present').length;
-        this.averageAttendance = data.length ? Math.round((presentCount / data.length) * 100) : 0;
-      } catch (e) {
-        console.error(e);
+        this.attendanceData = data.sort(
+          (a, b) => new Date(b.attendance_date) - new Date(a.attendance_date)
+        );
+        this.loadAttendanceChart(this.attendanceData);
+      } catch (err) {
+        console.error('Error fetching attendance:', err);
       }
     },
-    async fetchReviews() {
+
+    async fetchReviewsAndLoadChart() {
       try {
         const res = await fetch('http://localhost:5000/reviews');
-        this.performanceReviews = await res.json();
-      } catch (e) {
-        console.error(e);
+        const data = await res.json();
+        this.performanceReviews = data;
+        this.loadPerformanceChart(data);
+      } catch (err) {
+        console.error('Error fetching performance reviews:', err);
       }
     },
+
     async fetchLeaveRequests() {
       try {
         const res = await fetch('http://localhost:5000/leaves');
         this.leaveRequests = await res.json();
-      } catch (e) {
-        console.error(e);
+      } catch (err) {
+        console.error('Error fetching leave requests:', err);
       }
     },
-    updateAttendanceProgress() {
-   
-      this.attendanceDashArray = `${this.averageAttendance}, 100`;
-    },
-    initRadarChart() {
-      if (this.radarChart) this.radarChart.destroy();
-      const ctx = this.$refs.radarChart.getContext('2d');
 
-      
+    loadPerformanceChart(reviews) {
+      const labels = reviews.map((r) => `${r.first_name} ${r.last_name}`);
+      const data = reviews.map((r) => r.score);
 
-      
-      const labels = ['Quality', 'Speed', 'Teamwork', 'Creativity', 'Reliability'];
+      if (this.performanceChart) this.performanceChart.destroy();
 
+      const ctx = this.$refs.chartRef.getContext('2d');
 
-      const datasetData = this.performanceReviews.length
-        ? this.performanceReviews.map(() => labels.map(() => Math.floor(Math.random() * 50 + 50))) // random between 50-100
-        : [];
-
-      this.radarChart = new Chart(ctx, {
-        type: 'radar',
+      this.performanceChart = new Chart(ctx, {
+        type: 'line',
         data: {
           labels,
-          datasets: this.performanceReviews.map((r, i) => ({
-            label: `${r.first_name} ${r.last_name}`,
-            data: datasetData[i] || [],
-            fill: true,
-            backgroundColor: `rgba(59, 130, 246, 0.2)`,
-            borderColor: `rgba(59, 130, 246, 1)`,
-            pointBackgroundColor: `rgba(59, 130, 246, 1)`,
-            tension: 0.4,
-          })),
+          datasets: [
+            {
+              label: 'Performance Score',
+              data,
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59, 130, 246, 0.2)',
+              tension: 0.3,
+              fill: true,
+              pointBackgroundColor: '#3b82f6',
+            },
+          ],
         },
         options: {
           responsive: true,
           plugins: {
             legend: { labels: { color: '#374151' } },
-            title: { display: true, text: 'Employee Performance Radar', color: '#374151' },
+            title: {
+              display: true,
+              text: 'Employee Performance',
+              color: '#374151',
+            },
           },
           scales: {
-            r: {
-              angleLines: { color: '#d1d5db' },
-              grid: { color: '#e5e7eb' },
-              pointLabels: { color: '#6b7280', font: { size: 12 } },
-              min: 0,
-              max: 100,
-              ticks: { color: '#6b7280', stepSize: 20 },
+            x: {
+              ticks: { color: '#6b7280', autoSkip: true, maxTicksLimit: 10 },
+            },
+            y: {
+              ticks: { color: '#6b7280' },
+            },
+          },
+        },
+      });
+    },
+
+    loadAttendanceChart(records) {
+      const statusCounts = records.reduce(
+        (acc, cur) => {
+          acc[cur.status] = (acc[cur.status] || 0) + 1;
+          return acc;
+        },
+        {}
+      );
+
+      const labels = Object.keys(statusCounts);
+      const counts = Object.values(statusCounts);
+
+      if (this.attendanceChart) this.attendanceChart.destroy();
+
+      const ctx = this.$refs.attendanceChartRef.getContext('2d');
+
+      this.attendanceChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels,
+          datasets: [
+            {
+              data: counts,
+              backgroundColor: ['#22c55e', '#ef4444', '#eab308'],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: '#374151' } },
+            title: {
+              display: true,
+              text: 'Attendance Status Distribution',
+              color: '#374151',
             },
           },
         },
@@ -261,5 +309,5 @@ export default {
 </script>
 
 <style scoped>
-/* nothing custom for now */
+/* Add any component-specific styles here */
 </style>

@@ -22,14 +22,14 @@
         </div>
       </div>
 
-      <!-- Employee Table -->
+      
       <EmployeeTableView
         :employees="employees"
         @edit="openEditModal"
         @delete="handleDelete"
       />
 
-      <!-- Modal Overlay -->
+      
       <div
         v-if="showModal"
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -110,14 +110,14 @@ export default {
       }
     },
 
-    //Open modal for adding
+    
     openAddModal() {
       this.resetForm()
       this.editMode = false
       this.showModal = true
     },
 
-    //Open modal for editing
+    
     openEditModal(emp) {
       this.editMode = true
       this.editId = emp.employee_id
