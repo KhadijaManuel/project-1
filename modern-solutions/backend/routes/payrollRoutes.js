@@ -6,7 +6,7 @@ const authenticateToken = require('../middleware/authMiddleware');
 // Protect this route
 
 router.get('/', getAllPayroll);// GET all data from the database 
-//router.get('/', authenticateToken, getAllPayroll);  makes the route 
+
 router.post('/', addPayroll);              // POST new record to the database 
 router.get('/:id', getPayrollByEmployee);  // GET by employee_id from the database for a specfic person 
 router.put('/:id', updatePayroll);         // UPDATE by employee_id from the database for a sepfic person 

@@ -4,7 +4,7 @@
       @submit.prevent="handleSignup"
       class="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-8 w-full max-w-sm border border-gray-200 dark:border-gray-700 transition-all duration-300"
     >
-      <!-- Header -->
+      
       <div class="mb-6 text-center">
         <h1 class="text-3xl font-extrabold text-blue-700 dark:text-blue-400">Create Account</h1>
         <p class="text-gray-600 dark:text-gray-300 mt-2 text-sm">
@@ -12,7 +12,7 @@
         </p>
       </div>
 
-      <!-- Username -->
+     
       <div class="mb-5">
         <label for="username" class="block text-gray-700 dark:text-gray-200 font-medium mb-2">Username</label>
         <input
@@ -25,7 +25,7 @@
         />
       </div>
 
-      <!-- Employee ID -->
+     
       <div class="mb-5">
         <label for="employee_id" class="block text-gray-700 dark:text-gray-200 font-medium mb-2">Employee ID</label>
         <input
@@ -38,7 +38,7 @@
         />
       </div>
 
-      <!-- Password -->
+     
       <div class="mb-6">
         <label for="password" class="block text-gray-700 dark:text-gray-200 font-medium mb-2">Password</label>
         <input
@@ -51,7 +51,7 @@
         />
       </div>
 
-      <!-- Submit Button -->
+     
       <button
         type="submit"
         class="w-full bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300"
@@ -59,7 +59,7 @@
         Sign Up
       </button>
 
-      <!-- Success / Error -->
+      
       <p
         v-if="successMessage"
         class="text-green-600 dark:text-green-400 mt-4 text-sm text-center"
@@ -73,7 +73,7 @@
         {{ signupError }}
       </p>
 
-      <!-- Back to Login -->
+     
       <div class="text-center mt-4">
         <router-link
           to="/"
@@ -133,5 +133,4 @@ export default {
 </script>
 
 <style scoped>
-/* All styling handled by Tailwind classes */
 </style>

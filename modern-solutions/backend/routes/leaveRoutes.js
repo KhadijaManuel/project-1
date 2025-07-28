@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// Import all necessary controller functions for leave requests
+// Importing all necessary controller functions for leave requests
 const {
   getAllLeaveRequests,
   getLeaveByEmployee,

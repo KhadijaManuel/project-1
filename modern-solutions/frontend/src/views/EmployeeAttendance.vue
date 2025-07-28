@@ -8,7 +8,7 @@
           </h2>
         </div>
 
-        <!-- Date Selector -->
+        
         <div class="mb-8 flex items-center space-x-6 flex-wrap">
           <label for="selectedDate" class="text-lg font-semibold text-gray-700 dark:text-gray-300">
             Select Date:
@@ -21,7 +21,7 @@
           />
         </div>
 
-        <!-- Attendance Table -->
+        
         <CardComp class="overflow-x-auto mb-10">
           <table
             v-if="attendanceData.length"
@@ -65,7 +65,7 @@
           </p>
         </CardComp>
 
-        <!-- Responsive Bar Chart -->
+     
         <CardComp class="p-4">
           <h2 class="text-2xl font-semibold mb-6 text-gray-900 dark:text-gray-100">
             Attendance Summary – {{ selectedDate }}
@@ -114,7 +114,7 @@ export default {
         const leaveRecords = await leaveRes.json();
 
         const grouped = {};
-        // Group attendance
+        
         attendanceRecords.forEach((rec) => {
           const empId = rec.employee_id;
           if (!grouped[empId]) {
@@ -127,7 +127,7 @@ export default {
           }
           grouped[empId].attendance.push({ date: rec.attendance_date, status: rec.status });
         });
-        // Group leaves
+        
         leaveRecords.forEach((leave) => {
           const empId = leave.employee_id;
           if (!grouped[empId]) {

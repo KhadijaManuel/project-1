@@ -8,7 +8,7 @@
       <div
         class="relative w-full h-52 transform transition-transform duration-500 group-hover:rotate-y-180 preserve-3d rounded-lg shadow-lg"
       >
-        <!-- Front Side -->
+        
         <div
           class="absolute inset-0 bg-blue-600 text-white flex flex-col justify-center items-center p-4 rounded-lg backface-hidden"
         >
@@ -23,7 +23,7 @@
               v-else
               class="w-full h-full flex items-center justify-center bg-blue-800 text-xl font-bold"
             >
-              👤
+              
             </div>
           </div>
           <h3 class="text-lg font-semibold mb-1">{{ review.employeeName }}</h3>
@@ -31,7 +31,7 @@
           <p class="text-sm mt-1">Review Period: {{ review.reviewPeriod || 'N/A' }}</p>
         </div>
 
-        <!-- Back Side -->
+        
         <div
           class="absolute inset-0 bg-gray-700 text-white flex flex-col justify-between p-4 rounded-lg rotate-y-180 backface-hidden"
         >

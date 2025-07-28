@@ -7,7 +7,7 @@ import EmployeesView from '@/views/EmployeesView.vue'
 import LeaveView from '@/views/LeaveView.vue'
 import PerformanceReviewView from '@/views/PerformanceReviewView.vue'
 
-// ✅ Import the Signup page
+//Import the Signup page
 import SignupView from '@/views/signup.vue'
 
 const routes = [

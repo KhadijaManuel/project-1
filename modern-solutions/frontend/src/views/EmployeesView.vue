@@ -1,7 +1,7 @@
 <template>
   <div class="flex min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
     <main class="flex-1 px-8 py-10">
-      <!-- Top Bar -->
+    
       <div class="mb-8 flex justify-between items-center gap-4 flex-wrap">
         <h2 class="text-3xl font-extrabold text-blue-700 dark:text-blue-400 tracking-tight">
           Employee Management
@@ -11,13 +11,13 @@
             @click="openAddModal"
             class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow"
           >
-            ➕ Add Employee
+            Add Employee
           </button>
           <button
             @click="fetchEmployees"
             class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg shadow"
           >
-            🔄 Refresh
+             Refresh
           </button>
         </div>
       </div>
@@ -110,14 +110,14 @@ export default {
       }
     },
 
-    // 🔹 Open modal for adding
+    //Open modal for adding
     openAddModal() {
       this.resetForm()
       this.editMode = false
       this.showModal = true
     },
 
-    // 🔹 Open modal for editing
+    //Open modal for editing
     openEditModal(emp) {
       this.editMode = true
       this.editId = emp.employee_id

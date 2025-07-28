@@ -6,7 +6,7 @@
 
     <form @submit.prevent="handleSubmit" class="bg-white dark:bg-gray-800 shadow p-4 rounded-xl mb-6 grid gap-4">
       <h3 class="text-xl font-semibold mb-2">
-        {{ editingReview ? '✏️ Update Review' : '➕ Add Review' }}
+        {{ editingReview ? 'Update Review' : 'Add Review' }}
       </h3>
 
       <select v-model="form.employee_id" class="border p-2 rounded" required>
@@ -47,9 +47,9 @@ export default {
   data() {
     return {
       reviews: [],
-      employees: [], // New state to store employees
+      employees: [], 
       form: {
-        employee_id: "", // Now holds the selected employee's ID
+        employee_id: "", 
         review_period: "",
         reviewer: "",
         score: 0,
@@ -69,8 +69,8 @@ export default {
         const data = await response.json();
         this.reviews = data.map((r) => ({
           id: r.review_id,
-          employeeId: r.employee_id, // Ensure this is available from your backend
-          employeeName: `${r.first_name} ${r.last_name}`, // Assuming your backend returns these
+          employeeId: r.employee_id, 
+          employeeName: `${r.first_name} ${r.last_name}`, 
           reviewPeriod: r.review_period,
           reviewer: r.reviewer,
           score: r.score,
@@ -82,14 +82,14 @@ export default {
     },
     async fetchEmployees() {
       try {
-        const response = await fetch("http://localhost:5000/employees", { // Assuming this is your employee endpoint
+        const response = await fetch("http://localhost:5000/employees", { 
           headers: {
             "Authorization": `Bearer ${localStorage.getItem("authToken")}`,
           },
         });
         const data = await response.json();
         this.employees = data.map((e) => ({
-          id: e.employee_id, // Adjust to match your actual employee ID field
+          id: e.employee_id, 
           first_name: e.first_name,
           last_name: e.last_name,
         }));
@@ -100,7 +100,7 @@ export default {
     async handleSubmit() {
       try {
         const body = {
-          employee_id: this.form.employee_id, // Now uses the selected employee_id
+          employee_id: this.form.employee_id, 
           review_period: this.form.review_period,
           reviewer: this.form.reviewer,
           score: this.form.score,
@@ -134,9 +134,9 @@ export default {
     },
     startEdit(review) {
       this.editingReview = review;
-      // When editing, set the employee_id from the review data
+      
       this.form = {
-        employee_id: review.employeeId, // Use the employeeId from the review
+        employee_id: review.employeeId, 
         review_period: review.reviewPeriod,
         reviewer: review.reviewer,
         score: review.score,
@@ -148,7 +148,7 @@ export default {
     },
     resetForm() {
       this.form = {
-        employee_id: "", // Reset employee_id as well
+        employee_id: "", 
         review_period: "",
         reviewer: "",
         score: 0,
@@ -171,7 +171,7 @@ export default {
   },
   mounted() {
     this.fetchReviews();
-    this.fetchEmployees(); // Fetch employees when the component mounts
+    this.fetchEmployees(); 
   },
 };
 </script>

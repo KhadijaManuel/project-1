@@ -1,6 +1,6 @@
 <template>
   <div class="flex h-screen bg-gray-100 dark:bg-gray-900">
-    <!-- Main Content -->
+
     <main class="flex-1 overflow-y-auto p-6">
       <CardComp class="max-w-6xl mx-auto p-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg">
         <div class="mb-8">
@@ -40,19 +40,19 @@
                   {{ (Number(entry.base_salary) - Number(entry.deductions)).toFixed(2) }}
                 </td>
                 <td class="px-6 py-3 space-x-2">
-                  <!-- Download -->
+                  
                   <button
                     @click="downloadPaycheck(entry)"
                     class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded transition">
                     Download
                   </button>
-                  <!-- Update -->
+                
                   <button
                     @click="updatePayroll(entry)"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded transition">
                     Update
                   </button>
-                  <!-- Delete -->
+                  
                   <button
                     @click="deletePayroll(entry.payroll_id)"
                     class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded transition">
@@ -100,7 +100,7 @@ export default {
     document.documentElement.classList.toggle('dark', this.isDarkMode);
   },
   methods: {
-    // format numbers safely
+    
     formatNumber(value) {
       if (value === null || value === undefined || value === '') return '0.00';
       const num = Number(value);
@@ -120,7 +120,7 @@ export default {
       return (dailyIncome * leaveDays).toFixed(2);
     },
 
-    // PDF download function using jspdf 
+   
     downloadPaycheck(emp) {
       const doc = new jsPDF();
       const content = `
@@ -141,20 +141,20 @@ export default {
       doc.save(`Paycheck_${emp.employee_id}.pdf`);
     },
 
-    // Delete payroll data in the database 
+    
     async deletePayroll(id) {
       if (!confirm('Are you sure you want to delete this payroll record?')) return;
       try {
         await axios.delete(`http://localhost:5000/payroll/${id}`);
         this.$store.dispatch('fetchPayrollData');
-        alert('✅ Payroll record deleted.');
+        alert(' Payroll record deleted.');
       } catch (err) {
         console.error('Delete error:', err);
-        alert('❌ Failed to delete payroll record.');
+        alert(' Failed to delete payroll record.');
       }
     },
 
-    // Update payroll
+  
     async updatePayroll(entry) {
       const newNetPay = prompt('Enter new Net Pay:', entry.net_pay);
       if (newNetPay === null) return;
@@ -168,10 +168,10 @@ export default {
           leave_deductions: entry.leave_deductions,
         });
         this.$store.dispatch('fetchPayrollData');
-        alert('✅ Payroll record updated.');
+        alert('Payroll record updated.');
       } catch (err) {
         console.error('Update error:', err);
-        alert('❌ Failed to update payroll record.');
+        alert('Failed to update payroll record.');
       }
     },
   },

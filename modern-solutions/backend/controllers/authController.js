@@ -45,12 +45,6 @@ exports.registerUser = async (req, res) => {
 
 /**
  * LOGIN user
- * Expects: { username, password } in the fromat 
- * {
-  "username": "john_doe",
-  "password": "secret123",
-  "employee_id": "002"
-}
  * Returns: JWT token when it is successful and add the data in the database 
  */
 exports.loginUser = async (req, res) => {
@@ -100,3 +94,69 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ message: 'Login failed', error: err.sqlMessage });
   }
 };
+
+//DELETE a user by user_id
+
+exports.deleteUser = async (req, res) => {
+  const { user_id } = req.params;
+
+  try {
+    const [result] = await db.query('DELETE FROM users WHERE user_id = ?', [user_id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (err) {
+    console.error('Delete User Error:', err);
+    res.status(500).json({ message: 'Failed to delete user', error: err.sqlMessage });
+  }
+};
+
+//UPDATE user details
+exports.updateUser = async (req, res) => {
+  const { user_id } = req.params;
+  const { username, password, employee_id } = req.body;
+
+  if (!username && !password && !employee_id) {
+    return res.status(400).json({ message: 'No fields to update' });
+  }
+
+  try {
+    const fields = [];
+    const values = [];
+
+    if (username) {
+      fields.push('username = ?');
+      values.push(username);
+    }
+
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      fields.push('password_hash = ?');
+      values.push(hashedPassword);
+    }
+
+    if (employee_id) {
+      fields.push('employee_id = ?');
+      values.push(employee_id);
+    }
+
+    values.push(user_id);
+
+    const sql = `UPDATE users SET ${fields.join(', ')} WHERE user_id = ?`;
+    const [result] = await db.query(sql, values);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User updated successfully' });
+  } catch (err) {
+    console.error('Update User Error:', err);
+    res.status(500).json({ message: 'Failed to update user', error: err.sqlMessage });
+  }
+};
+

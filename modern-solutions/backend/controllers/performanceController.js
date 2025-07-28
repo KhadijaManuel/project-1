@@ -1,7 +1,7 @@
 // controllers/performanceController.js
 const db = require('../models/db');
 
-// ✅ Get all performance reviews
+//Get all performance reviews
 exports.getAllReviews = async (req, res) => {
   console.log('[DEBUG] GET /reviews called');
   try {
@@ -22,7 +22,7 @@ exports.getAllReviews = async (req, res) => {
   }
 };
 
-// ✅ Add a new performance review
+//Add a new performance review
 exports.addReview = async (req, res) => {
   const { employee_id, review_period, reviewer, score, comments } = req.body;
 
@@ -44,7 +44,7 @@ exports.addReview = async (req, res) => {
   }
 };
 
-// ✅ Delete a review
+//Delete a review
 exports.deleteReview = async (req, res) => {
   const { id } = req.params;
 
@@ -70,7 +70,7 @@ exports.deleteReview = async (req, res) => {
   }
 };
 
-// ✅ Update a review
+//Update a review
 exports.updateReview = async (req, res) => {
   const { id } = req.params;
   const { review_period, reviewer, score, comments } = req.body;

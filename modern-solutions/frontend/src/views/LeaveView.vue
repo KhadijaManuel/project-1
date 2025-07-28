@@ -78,18 +78,17 @@
 
 <script>
 import LeaveTableView from '@/components/LeaveTableView.vue';
-// If SidebarComp is not used in this specific view, it can be removed
-// import SidebarComp from '@/components/SidebarComp.vue';
+
 
 export default {
-  components: { LeaveTableView /* , SidebarComp */ },
+  components: { LeaveTableView},
   data() {
     return {
       leaves: [],
       filterStatus: 'All',
       newLeave: {
-        employee_id: null, // Corresponds to `employee_id` in your backend
-        date: '',          // Corresponds to `leave_date` in your backend
+        employee_id: null, 
+        date: '',         
         reason: '',
         status: ''
       }
@@ -118,27 +117,25 @@ export default {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        // Map backend response to frontend's expected structure for display
         this.leaves = data.map(l => ({
-          id: l.leave_id, // Use backend's leave_id as unique key for Vue
+          id: l.leave_id, 
           employeeId: l.employee_id,
-          employeeName: `${l.first_name} ${l.last_name}`, // Assuming your backend query returns these
-          date: l.leave_date, // Match frontend display field to backend field
+          employeeName: `${l.first_name} ${l.last_name}`, 
+          date: l.leave_date, 
           reason: l.reason,
           status: l.status,
         }));
       } catch (error) {
         console.error('Error fetching leaves:', error);
-        // Optionally display user-friendly error message
       }
     },
 
     async addLeave() {
       try {
-        // Prepare payload to match backend's `addLeaveRequest` expected fields
+        
         const payload = {
           employee_id: this.newLeave.employee_id,
-          leave_date: this.newLeave.date, // Map frontend 'date' to backend 'leave_date'
+          leave_date: this.newLeave.date, 
           reason: this.newLeave.reason,
           status: this.newLeave.status,
         };
@@ -157,12 +154,10 @@ export default {
           throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
         }
 
-        // Refetch leaves to update the table with the newly added entry
         await this.fetchLeaves();
-        this.resetForm(); // Clear the form
+        this.resetForm(); 
       } catch (error) {
         console.error('Error adding leave request:', error);
-        // Optionally display user-friendly error message
       }
     },
 
@@ -183,11 +178,11 @@ export default {
           throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
         }
 
-        // Refetch leaves to update the table after deletion
+        
         await this.fetchLeaves();
       } catch (error) {
         console.error('Error deleting leave request:', error);
-        // Optionally display user-friendly error message
+   
       }
     },
 

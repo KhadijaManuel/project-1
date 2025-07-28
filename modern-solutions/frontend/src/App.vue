@@ -17,7 +17,7 @@ const isAuthPage = computed(() =>
     id="app"
     class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 flex flex-col"
   >
-    <!-- Navbar (hidden on login & signup pages) -->
+    
     <nav
       v-if="!isAuthPage"
       class="flex justify-between items-center px-6 py-4 bg-white dark:bg-gray-800 shadow"
@@ -28,7 +28,7 @@ const isAuthPage = computed(() =>
       </div>
     </nav>
 
-    <!-- Main layout (with sidebar on all non-auth pages) -->
+    
     <div v-if="!isAuthPage" class="flex flex-1 min-h-0">
       <SidebarComp />
       <main class="flex-1 p-6 overflow-auto">
@@ -36,7 +36,7 @@ const isAuthPage = computed(() =>
       </main>
     </div>
 
-    <!-- Only show login or signup page (no sidebar, no navbar) -->
+    
     <div v-else class="flex-1">
       <router-view />
     </div>

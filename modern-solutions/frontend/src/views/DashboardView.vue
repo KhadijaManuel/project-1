@@ -1,224 +1,265 @@
 <template>
-  <div class="flex h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
-    <main class="flex-1 p-8 overflow-y-auto space-y-6">
-      <!-- Summary Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <CardComp>
-          <div class="p-4">
-            <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Monthly Payroll</h4>
-            <p class="mt-2 text-2xl font-semibold text-green-600 dark:text-green-400">R573 000</p>
+  <div class="p-8 space-y-10 bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <!-- Summary Cards Row -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <CardComp class="flex items-center space-x-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
+        <div class="p-3 bg-blue-100 dark:bg-blue-700 rounded-full">
+          <span class="text-blue-600 dark:text-white text-3xl">👨‍💼</span>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-300">Employees</p>
+          <p class="text-2xl font-extrabold text-gray-900 dark:text-white">{{ employees.length }}</p>
+        </div>
+      </CardComp>
+
+      <CardComp class="flex items-center space-x-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
+        <div class="p-3 bg-green-100 dark:bg-green-700 rounded-full">
+          <span class="text-green-600 dark:text-white text-3xl">📋</span>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-300">Attendance Records</p>
+          <p class="text-2xl font-extrabold text-gray-900 dark:text-white">{{ attendanceData.length }}</p>
+        </div>
+      </CardComp>
+
+      <CardComp class="flex items-center space-x-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
+        <div class="p-3 bg-yellow-100 dark:bg-yellow-700 rounded-full">
+          <span class="text-yellow-600 dark:text-white text-3xl">📈</span>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-300">Performance Reviews</p>
+          <p class="text-2xl font-extrabold text-gray-900 dark:text-white">{{ performanceReviews.length }}</p>
+        </div>
+      </CardComp>
+
+      <CardComp class="flex items-center space-x-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
+        <div class="p-3 bg-purple-100 dark:bg-purple-700 rounded-full">
+          <span class="text-purple-600 dark:text-white text-3xl">💰</span>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-300">Total Monthly Payroll</p>
+          <p class="text-2xl font-extrabold text-gray-900 dark:text-white">R{{ totalPayroll.toLocaleString() }}</p>
+        </div>
+      </CardComp>
+    </div>
+
+    <!-- Middle Section: Attendance Progress & Radar Chart -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <CardComp class="flex flex-col items-center justify-center p-8 bg-white dark:bg-gray-800 rounded-xl shadow-md">
+        <p class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Average Attendance</p>
+        <svg class="w-40 h-40" viewBox="0 0 36 36">
+          <path
+            class="text-gray-200 dark:text-gray-700"
+            stroke-width="3"
+            fill="none"
+            stroke="currentColor"
+            d="M18 2.0845
+               a 15.9155 15.9155 0 0 1 0 31.831
+               a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+          <path
+            class="text-indigo-500"
+            stroke-width="3"
+            fill="none"
+            stroke-linecap="round"
+            :stroke-dasharray="attendanceDashArray"
+            stroke="currentColor"
+            d="M18 2.0845
+               a 15.9155 15.9155 0 0 1 0 31.831
+               a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+          <text
+            x="18"
+            y="20.35"
+            class="text-3xl font-bold fill-current text-indigo-600 dark:text-indigo-400"
+            text-anchor="middle"
+          >{{ averageAttendance }}%</text>
+        </svg>
+      </CardComp>
+
+      <!-- Performance Radar Chart -->
+      <CardComp class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md col-span-2">
+        <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6">Performance Overview</h3>
+        <canvas ref="radarChart" class="w-full h-64"></canvas>
+      </CardComp>
+    </div>
+
+    <!-- Recent Leave Requests -->
+    <CardComp class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
+      <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Recent Leave Requests</h3>
+      <ul>
+        <li
+          v-for="leave in leaveRequests.slice(0, 6)"
+          :key="leave.id"
+          class="flex justify-between py-2 border-b dark:border-gray-700"
+        >
+          <span>{{ leave.first_name }} {{ leave.last_name }}</span>
+          <span
+            :class="{
+              'px-3 py-1 rounded-full text-xs font-semibold': true,
+              'bg-yellow-300 text-yellow-900': leave.status === 'Pending',
+              'bg-green-300 text-green-900': leave.status === 'Approved',
+              'bg-red-300 text-red-900': leave.status === 'Rejected',
+            }"
+          >
+            {{ leave.status }}
+          </span>
+        </li>
+      </ul>
+    </CardComp>
+
+    <!-- Featured Employees with Avatars -->
+    <div>
+      <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-6">Featured Employees</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <CardComp
+          v-for="(emp, i) in employees.slice(0, 6)"
+          :key="i"
+          class="flex items-center space-x-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow hover:shadow-lg"
+        >
+          <div
+            class="w-12 h-12 flex items-center justify-center rounded-full bg-indigo-600 text-white font-semibold text-lg uppercase"
+          >
+            {{ emp.first_name.charAt(0) }}{{ emp.last_name.charAt(0) }}
           </div>
-        </CardComp>
-        <CardComp>
-          <div class="p-4">
-            <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Employees</h4>
-            <p class="mt-2 text-2xl font-semibold text-blue-600 dark:text-blue-400">10</p>
-          </div>
-        </CardComp>
-        <CardComp>
-          <div class="p-4">
-            <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Avg Attendance</h4>
-            <p class="mt-2 text-2xl font-semibold text-purple-600 dark:text-purple-400">
-              {{ averageAttendance }}%
-            </p>
-          </div>
-        </CardComp>
-        <CardComp>
-          <div class="p-4">
-            <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400">Open Leave Requests</h4>
-            <p class="mt-2 text-2xl font-semibold text-yellow-600 dark:text-yellow-400">4</p>
+          <div>
+            <h4 class="text-lg font-semibold text-gray-800 dark:text-white">
+              {{ emp.first_name }} {{ emp.last_name }}
+            </h4>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{ emp.role || 'N/A' }}</p>
           </div>
         </CardComp>
       </div>
-
-      <!-- Performance Reviews Table -->
-      <CardComp>
-        <h3 class="text-lg font-semibold mb-3">Performance Reviews</h3>
-        <table class="min-w-full text-sm">
-          <thead>
-            <tr class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-200">
-              <th class="py-2 px-3 text-left">Employee</th>
-              <th class="py-2 px-3 text-left">Reviewer</th>
-              <th class="py-2 px-3 text-left">Period</th>
-              <th class="py-2 px-3 text-left">Score</th>
-              <th class="py-2 px-3 text-left">Comments</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="rev in reviews.slice(0,5)"
-              :key="rev.review_id"
-              class="border-b border-gray-200 dark:border-gray-700"
-            >
-              <td class="py-2 px-3">{{ rev.first_name }} {{ rev.last_name }}</td>
-              <td class="py-2 px-3">{{ rev.reviewer }}</td>
-              <td class="py-2 px-3">{{ rev.review_period }}</td>
-              <td class="py-2 px-3 font-semibold" :class="rev.score >= 7 ? 'text-green-500' : 'text-red-500'">
-                {{ rev.score }}
-              </td>
-              <td class="py-2 px-3">{{ rev.comments }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </CardComp>
-
-      <!-- Existing Overview and other sections -->
-      <CardComp>
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-semibold">Dashboard Overview</h2>
-        </div>
-        <p class="text-gray-600 dark:text-gray-300 mb-6 italic font-light tracking-wide">
-          Effortlessly manage employee records, monitor attendance in real-time, approve leave requests seamlessly,
-          and streamline payroll—all from a single intuitive dashboard.
-        </p>
-
-        <!-- Performance Chart -->
-        <div class="mb-6">
-          <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">Performance Chart</h3>
-          <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
-            <canvas id="dashboardChart" class="w-full h-64"></canvas>
-          </div>
-        </div>
-      </CardComp>
-
-      <!-- Attendance Table -->
-      <CardComp>
-        <h3 class="text-lg font-semibold mb-3">Latest Attendance</h3>
-        <table class="min-w-full text-sm">
-          <thead>
-            <tr class="bg-gray-100 dark:bg-gray-700">
-              <th class="py-2 px-3 text-left">Employee</th>
-              <th class="py-2 px-3 text-left">Date</th>
-              <th class="py-2 px-3 text-left">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="att in attendanceData.slice(0,5)"
-              :key="att.attendance_id"
-              class="border-b border-gray-200 dark:border-gray-700"
-            >
-              <td class="py-2 px-3">{{ att.first_name }} {{ att.last_name }}</td>
-              <td class="py-2 px-3">{{ att.attendance_date }}</td>
-              <td class="py-2 px-3 font-medium" :class="att.status === 'Present' ? 'text-green-600' : 'text-red-600'">
-                {{ att.status }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </CardComp>
-    </main>
+    </div>
   </div>
 </template>
 
 <script>
 import CardComp from '@/components/CardComp.vue';
-import {
-  Chart,
-  LineController,
-  LineElement,
-  BarController,
-  BarElement,
-  PointElement,
-  LinearScale,
-  Title,
-  CategoryScale,
-  Tooltip,
-  Legend
-} from 'chart.js';
+import { Chart, RadarController, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend } from 'chart.js';
 
-Chart.register(
-  LineController,
-  LineElement,
-  BarController,
-  BarElement,
-  PointElement,
-  LinearScale,
-  Title,
-  CategoryScale,
-  Tooltip,
-  Legend
-);
+Chart.register(RadarController, RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
 export default {
-  name: 'DashboardView',
   components: { CardComp },
   data() {
     return {
+      employees: [],
       attendanceData: [],
-      reviews: [],
-      averageAttendance: 0
+      performanceReviews: [],
+      leaveRequests: [],
+      totalPayroll: 0,
+      averageAttendance: 0,
+      attendanceDashArray: '0, 100',
+      radarChart: null,
     };
   },
   mounted() {
-    this.loadPerformanceChart();
-    this.fetchAttendance();
-    this.fetchReviews();
+    this.loadData();
   },
   methods: {
+    async loadData() {
+      await Promise.all([
+        this.fetchEmployees(),
+        this.fetchAttendance(),
+        this.fetchReviews(),
+        this.fetchLeaveRequests(),
+      ]);
+      this.updateAttendanceProgress();
+      this.initRadarChart();
+    },
+    async fetchEmployees() {
+      try {
+        const res = await fetch('http://localhost:5000/employees');
+        this.employees = await res.json();
+        this.totalPayroll = this.employees.reduce((sum, e) => sum + (e.salary || 0), 0);
+      } catch (e) {
+        console.error(e);
+      }
+    },
     async fetchAttendance() {
       try {
         const res = await fetch('http://localhost:5000/attendance');
         const data = await res.json();
         this.attendanceData = data;
-        if (data.length > 0) {
-          const presentCount = data.filter(a => a.status.toLowerCase() === 'present').length;
-          this.averageAttendance = ((presentCount / data.length) * 100).toFixed(0);
-        }
-      } catch (err) {
-        console.error('Error fetching attendance:', err);
+        const presentCount = data.filter(a => a.status.toLowerCase() === 'present').length;
+        this.averageAttendance = data.length ? Math.round((presentCount / data.length) * 100) : 0;
+      } catch (e) {
+        console.error(e);
       }
     },
-async fetchReviews() {
-  try {
-    const res = await fetch('http://localhost:5000/reviews');
-    const data = await res.json();
-    this.reviews = Array.isArray(data) ? data : [];
-  } catch (err) {
-    console.error('Error fetching reviews:', err);
-    this.reviews = [];
-  }
-},
-
-    async loadPerformanceChart() {
+    async fetchReviews() {
       try {
-        const res = await fetch('/data/performance.json');
-        const json = await res.json();
-        const reviews = json.performanceReviews;
-
-        const labels = reviews.map(r => r.employeeName);
-        const scores = reviews.map(r => r.score);
-
-        const ctx = document.getElementById('dashboardChart').getContext('2d');
-        new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels,
-            datasets: [{
-              label: 'Performance Score',
-              data: scores,
-              borderColor: 'rgba(59, 130, 246, 0.8)',
-              backgroundColor: 'rgba(59, 130, 246, 0.1)',
-              fill: true,
-              tension: 0.4,
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { display: false },
-              title: { display: true, text: 'Q4 Performance Scores' }
-            },
-            scales: {
-              y: { min: 0, max: 10, ticks: { stepSize: 1 } }
-            }
-          }
-        });
-      } catch (err) {
-        console.error('Error loading performance data:', err);
+        const res = await fetch('http://localhost:5000/reviews');
+        this.performanceReviews = await res.json();
+      } catch (e) {
+        console.error(e);
       }
-    }
-  }
+    },
+    async fetchLeaveRequests() {
+      try {
+        const res = await fetch('http://localhost:5000/leaves');
+        this.leaveRequests = await res.json();
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    updateAttendanceProgress() {
+   
+      this.attendanceDashArray = `${this.averageAttendance}, 100`;
+    },
+    initRadarChart() {
+      if (this.radarChart) this.radarChart.destroy();
+      const ctx = this.$refs.radarChart.getContext('2d');
+
+      
+
+      
+      const labels = ['Quality', 'Speed', 'Teamwork', 'Creativity', 'Reliability'];
+
+
+      const datasetData = this.performanceReviews.length
+        ? this.performanceReviews.map(() => labels.map(() => Math.floor(Math.random() * 50 + 50))) // random between 50-100
+        : [];
+
+      this.radarChart = new Chart(ctx, {
+        type: 'radar',
+        data: {
+          labels,
+          datasets: this.performanceReviews.map((r, i) => ({
+            label: `${r.first_name} ${r.last_name}`,
+            data: datasetData[i] || [],
+            fill: true,
+            backgroundColor: `rgba(59, 130, 246, 0.2)`,
+            borderColor: `rgba(59, 130, 246, 1)`,
+            pointBackgroundColor: `rgba(59, 130, 246, 1)`,
+            tension: 0.4,
+          })),
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: '#374151' } },
+            title: { display: true, text: 'Employee Performance Radar', color: '#374151' },
+          },
+          scales: {
+            r: {
+              angleLines: { color: '#d1d5db' },
+              grid: { color: '#e5e7eb' },
+              pointLabels: { color: '#6b7280', font: { size: 12 } },
+              min: 0,
+              max: 100,
+              ticks: { color: '#6b7280', stepSize: 20 },
+            },
+          },
+        },
+      });
+    },
+  },
 };
 </script>
+
+<style scoped>
+/* nothing custom for now */
+</style>

@@ -1,4 +1,4 @@
-const db = require('../models/db'); // Ensure this path is correct for your database connection
+const db = require('../models/db'); // Ensure this path is correct for db connection
 
 // GET leave requests for all employees
 exports.getAllLeaveRequests = async (req, res) => {
@@ -17,7 +17,7 @@ exports.getAllLeaveRequests = async (req, res) => {
   }
 };
 
-// GET leave requests by employee_id (optional, good for specific employee views)
+// GET leave requests by employee_id 
 exports.getLeaveByEmployee = async (req, res) => {
   const { id } = req.params; // This 'id' is employee_id here
   try {
@@ -47,13 +47,7 @@ exports.addLeaveRequest = async (req, res) => {
     if (!employee_id || !leave_date || !reason || !status) {
       return res.status(400).json({ message: 'Missing required fields: employee_id, leave_date, reason, status.' });
     }
-    // You might want to validate employee_id exists in 'employees' table first
-    // For example:
-    // const [employeeExists] = await db.query('SELECT employee_id FROM employees WHERE employee_id = ?', [employee_id]);
-    // if (employeeExists.length === 0) {
-    //   return res.status(400).json({ message: 'Invalid Employee ID.' });
-    // }
-
+    
     await db.query(
       `INSERT INTO leave_requests (employee_id, leave_date, reason, status) VALUES (?, ?, ?, ?)`,
       [employee_id, leave_date, reason, status]

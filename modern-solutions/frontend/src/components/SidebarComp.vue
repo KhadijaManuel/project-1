@@ -5,13 +5,13 @@
       isCollapsed ? 'w-16 p-2' : 'w-64 p-4'
     ]"
   >
-    <!-- Collapse toggle button -->
+    
     <button
       @click="toggleSidebar"
       class="mb-6 self-end p-2 rounded hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
       aria-label="Toggle sidebar"
     >
-      <!-- Hamburger icon -->
+      
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="w-6 h-6"
@@ -40,12 +40,12 @@
                 : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
             "
           >
-            <!-- ✅ icon will now always show -->
+            
             <component :is="item.icon" class="w-5 h-5 shrink-0 text-current" />
             <span v-if="!isCollapsed">{{ item.label }}</span>
           </router-link>
 
-          <!-- Tooltip when collapsed -->
+          
           <span
             v-if="isCollapsed"
             class="absolute left-full top-1/2 -translate-y-1/2 ml-2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
@@ -56,7 +56,7 @@
       </ul>
     </nav>
 
-    <!-- Dark Mode Toggle Button -->
+    
     <button
       @click="toggleDarkMode"
       class="mt-auto flex items-center justify-center p-3 rounded hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"

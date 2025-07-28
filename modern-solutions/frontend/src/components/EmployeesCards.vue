@@ -67,37 +67,35 @@ export default {
   name: 'EmployeesCards',
   data() {
     return {
-      employees: [], // Initialize as an empty array
-      loading: true,  // New state for loading indicator
-      error: null     // New state for error messages
+      employees: [], 
+      loading: true,  
+      error: null     
     }
   },
   async mounted() {
-    await this.fetchEmployees(); // Fetch data first
-    if (!this.error) { // Only create charts if no error occurred
+    await this.fetchEmployees(); // Fetch data 
+    if (!this.error) { 
       this.createCharts();
     }
   },
   methods: {
     async fetchEmployees() {
-      this.loading = true; // Set loading to true before fetching
-      this.error = null;   // Clear previous errors
+      this.loading = true; 
+      this.error = null;   
 
       try {
-        // IMPORTANT: Replace this with your actual API endpoint!
-        // For local development with a static JSON file, you might use: '/employees.json'
-        // If you have a backend, it would be something like: 'https://api.yourdomain.com/employees'
+       
         const response = await fetch('YOUR_ACTUAL_API_ENDPOINT_HERE');
 
         if (!response.ok) {
-          // Handle HTTP errors (e.g., 404 Not Found, 500 Server Error)
+          
           const errorMessage = `HTTP error! Status: ${response.status} - ${response.statusText}`;
           throw new Error(errorMessage);
         }
 
         const data = await response.json();
 
-        // Validate data structure if necessary
+      
         if (!Array.isArray(data) || data.some(item => !item.id || !item.name || !item.photo)) {
           throw new Error('Fetched data is not in the expected format.');
         }
@@ -106,32 +104,32 @@ export default {
       } catch (err) {
         console.error("Failed to fetch employees:", err);
         this.error = `Failed to load employee data. Please try again. (${err.message})`;
-        this.employees = []; // Clear employees array on error
+        this.employees = []; 
       } finally {
-        this.loading = false; // Set loading to false after fetch attempt (success or failure)
+        this.loading = false; 
       }
     },
     createCharts() {
-      // Ensure employees array is not empty before creating charts
+      
       if (this.employees.length === 0) {
         return;
       }
 
       this.employees.forEach((employee) => {
-        // Attendance Chart
+        
         const attendanceCtx = document.getElementById(`attendance${employee.id}`);
         if (attendanceCtx) {
-          // Destroy existing chart instance to prevent conflicts on re-render/data update
+          
           if (attendanceCtx.chart) {
             attendanceCtx.chart.destroy();
           }
-          attendanceCtx.chart = new Chart(attendanceCtx, { // Store chart instance on canvas element
+          attendanceCtx.chart = new Chart(attendanceCtx, { 
             type: 'line',
             data: {
-              labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'], // Assuming fixed labels for weekly attendance
+              labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'], 
               datasets: [{
                 label: 'Attendance',
-                data: employee.attendanceData, // Dynamic data from employee object
+                data: employee.attendanceData, 
                 borderColor: '#3498db',
                 backgroundColor: 'rgba(52, 152, 219, 0.1)',
                 tension: 0.3,
@@ -149,7 +147,7 @@ export default {
                 x: { ticks: { font: { size: 8 } } },
                 y: {
                   min: 0,
-                  max: 1, // Attendance is 0 or 1
+                  max: 1, 
                   ticks: {
                     font: { size: 8 },
                     callback: (value) => (value === 1 ? 'Present' : 'Absent')
@@ -163,17 +161,17 @@ export default {
         // Payroll Chart
         const payrollCtx = document.getElementById(`payroll${employee.id}`);
         if (payrollCtx) {
-          // Destroy existing chart instance
+          
           if (payrollCtx.chart) {
             payrollCtx.chart.destroy();
           }
-          payrollCtx.chart = new Chart(payrollCtx, { // Store chart instance on canvas element
+          payrollCtx.chart = new Chart(payrollCtx, { 
             type: 'line',
             data: {
-              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'], // Assuming fixed labels for monthly salary
+              labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'], 
               datasets: [{
                 label: 'Salary',
-                data: employee.salaryData, // Dynamic data from employee object
+                data: employee.salaryData, 
                 borderColor: '#e74c3c',
                 backgroundColor: 'rgba(231, 76, 60, 0.1)',
                 tension: 0.3,
@@ -192,7 +190,7 @@ export default {
                 y: {
                   ticks: {
                     font: { size: 8 },
-                    callback: (value) => 'R' + value.toLocaleString() // Format as Rxxx,xxx
+                    callback: (value) => 'R' + value.toLocaleString() 
                   }
                 }
               }
@@ -202,7 +200,7 @@ export default {
       });
     }
   },
-  // Optional: Clean up charts when component is unmounted
+  
   beforeUnmount() {
     this.employees.forEach(employee => {
       const attendanceCtx = document.getElementById(`attendance${employee.id}`);
@@ -219,5 +217,4 @@ export default {
 </script>
 
 <style scoped>
-/* Add any component-specific styles here if needed */
 </style>
