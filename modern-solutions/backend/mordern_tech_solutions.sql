@@ -1,18 +1,18 @@
--- Create database
-CREATE DATABASE moderntech_tech_solutions;
-
+-- Create the database
+CREATE DATABASE IF NOT EXISTS moderntech_tech_solutions;
 USE moderntech_tech_solutions;
 
--- employeestable
+-- Employees table
 CREATE TABLE employees (
   employee_id INT AUTO_INCREMENT PRIMARY KEY,
-  first_name VARCHAR(100),
-  last_name VARCHAR(100),
-  email VARCHAR(100) UNIQUE,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
   role VARCHAR(50),
   salary DECIMAL(10,2),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 INSERT INTO employees (first_name, last_name, email, role, salary)
 VALUES
 ('Sibongile', 'Nkosi', 'sibongile.nkosi@moderntech.com', 'Software Engineer', 70000.00),
@@ -26,29 +26,28 @@ VALUES
 ('Karabo', 'Dlamini', 'karabo.dlamini@moderntech.com', 'Accountant', 62000.00),
 ('Fatima', 'Patel', 'fatima.patel@moderntech.com', 'Customer Support Lead', 58000.00);
 
--- Users table (for login/auth)
+-- Users table (Login system)
 CREATE TABLE users (
   user_id INT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(100) UNIQUE,
-  password_hash VARCHAR(255),
+  username VARCHAR(100) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
   employee_id INT,
   FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+    ON UPDATE CASCADE ON DELETE CASCADE
 );
--- user values goes here 
 
-
--- Payrolltable
+-- Payroll table
 CREATE TABLE payroll (
   payroll_id INT AUTO_INCREMENT PRIMARY KEY,
-  employee_id INT,
+  employee_id INT NOT NULL,
   base_salary DECIMAL(10,2),
   deductions DECIMAL(10,2),
   net_pay DECIMAL(10,2),
+  hours_worked INT,
+  leave_deductions INT,
   FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+    ON UPDATE CASCADE ON DELETE CASCADE
 );
-
-ALTER TABLE payroll ADD COLUMN hours_worked INT;
-ALTER TABLE payroll ADD COLUMN leave_deductions INT;
 
 INSERT INTO payroll 
   (employee_id, base_salary, deductions, net_pay, hours_worked, leave_deductions) 
@@ -65,15 +64,16 @@ VALUES
   (10, 57754.00, 4.00, 57750.00, 162, 4);
 
 
-
--- Leave and attendance
+-- Attendance table
 CREATE TABLE attendance (
   attendance_id INT AUTO_INCREMENT PRIMARY KEY,
-  employee_id INT,
-  attendance_date DATE,
-  status ENUM('Present','Absent'),
+  employee_id INT NOT NULL,
+  attendance_date DATE NOT NULL,
+  status ENUM('Present','Absent') NOT NULL,
   FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+    ON UPDATE CASCADE ON DELETE CASCADE
 );
+
 -- attendance
 -- Attendance for Employee 1
 INSERT INTO attendance (employee_id, attendance_date, status) VALUES
@@ -155,6 +155,9 @@ INSERT INTO attendance (employee_id, attendance_date, status) VALUES
 (10, '2025-07-28', 'Present'),
 (10, '2025-07-29', 'Present');
 
+
+
+-- Leave requests
 CREATE TABLE leave_requests (
   leave_id INT AUTO_INCREMENT PRIMARY KEY,
   employee_id INT,
@@ -163,7 +166,8 @@ CREATE TABLE leave_requests (
   status ENUM('Approved','Pending','Denied'),
   FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 );
--- leave
+
+-- Insert statements for leave_requests (see full doc for details)
 -- Leave Requests for Employee 1
 INSERT INTO leave_requests (employee_id, leave_date, reason, status) VALUES
 (1, '2025-07-22', 'Sick Leave', 'Approved'),
@@ -206,3 +210,44 @@ INSERT INTO leave_requests (employee_id, leave_date, reason, status) VALUES
 -- Leave Requests for Employee 10
 INSERT INTO leave_requests (employee_id, leave_date, reason, status) VALUES
 (10, '2024-12-03', 'Vacation', 'Pending');
+
+
+-- Performance Reviews table
+CREATE TABLE performance_reviews (
+  review_id INT AUTO_INCREMENT PRIMARY KEY,
+  employee_id INT NOT NULL,
+  employee_name varchar(100),
+  review_period VARCHAR(50),
+  reviewer VARCHAR(100),
+  score INT,
+  comments TEXT,
+  FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- Insert statements for performance_reviews (see full doc for details)
+INSERT INTO performance_reviews (employee_id, employee_name, review_period, reviewer, score, comments) VALUES
+(1, 'Sibongile Nkosi', '2024 Q4', 'Lungile Moyo', 9, 'Consistently delivers high-quality work and shows leadership potential.'),
+(2, 'Lungile Moyo', '2024 Q4', 'Thabo Molefe', 8, 'Excellent management skills and team support.'),
+(3, 'Thabo Molefe', '2024 Q4', 'Sibongile Nkosi', 8, 'Pays attention to detail and meets deadlines.'),
+(4, 'Keshav Naidoo', '2024 Q4', 'Zanele Khumalo', 7, 'Good sales performance, can improve on follow-ups.'),
+(5, 'Zanele Khumalo', '2024 Q4', 'Keshav Naidoo', 8, 'Creative marketing ideas and strong teamwork.'),
+(6, 'Sipho Zulu', '2024 Q4', 'Naledi Moeketsi', 7, 'Strong design skills and attention to user experience.'),
+(7, 'Naledi Moeketsi', '2024 Q4', 'Sipho Zulu', 8, 'Excellent at automating processes and ensuring system reliability.'),
+(8, 'Farai Gumbo', '2024 Q4', 'Zanele Khumalo', 7, 'Creative content ideas and good collaboration with marketing.'),
+(9, 'Karabo Dlamini', '2024 Q4', 'Fatima Patel', 8, 'Accurate financial reporting and strong analytical skills.'),
+(10, 'Fatima Patel', '2024 Q4', 'Karabo Dlamini', 9, 'Excellent customer support leadership and problem-solving.');
+
+-- TRIGGER to auto-insert into payroll and attendance for new employees
+DELIMITER //
+CREATE TRIGGER trg_add_payroll_attendance
+AFTER INSERT ON employees
+FOR EACH ROW
+BEGIN
+  INSERT INTO payroll (employee_id, base_salary, deductions, net_pay, hours_worked, leave_deductions)
+  VALUES (NEW.employee_id, NEW.salary, 0.00, NEW.salary, 0, 0);
+
+  INSERT INTO attendance (employee_id, attendance_date, status)
+  VALUES (NEW.employee_id, CURDATE(), 'Present');
+END;//
+DELIMITER ;

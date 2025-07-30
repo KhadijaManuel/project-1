@@ -1,28 +1,15 @@
 <template>
   <div class="flex min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
     <main class="flex-1 p-8">
-
       <h2 class="text-3xl font-bold mb-6 text-blue-700 dark:text-blue-400">Leave Management</h2>
 
       <div class="mb-6">
         <h5 class="text-lg font-semibold mb-2 text-gray-700 dark:text-gray-300">Filter by Status:</h5>
         <div class="flex flex-wrap gap-3">
-          <button
-            class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded"
-            @click="filterStatus = 'All'"
-          >All</button>
-          <button
-            class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded"
-            @click="filterStatus = 'Pending'"
-          >Pending</button>
-          <button
-            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-            @click="filterStatus = 'Approved'"
-          >Approved</button>
-          <button
-            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
-            @click="filterStatus = 'Denied'"
-          >Denied</button>
+          <button class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded" @click="filterStatus = 'All'">All</button>
+          <button class="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded" @click="filterStatus = 'Pending'">Pending</button>
+          <button class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded" @click="filterStatus = 'Approved'">Approved</button>
+          <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded" @click="filterStatus = 'Denied'">Denied</button>
         </div>
       </div>
 
@@ -30,8 +17,15 @@
         <LeaveTableView :leaves="filteredLeaves" @delete-leave="deleteLeave" />
       </div>
 
-      <div class="flex justify-center mt-10">
-        <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6 w-full max-w-xl">
+      <div class="flex justify-center">
+        <button @click="showPopup = true" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition">
+          + Add Leave Request
+        </button>
+      </div>
+
+      <div v-if="showPopup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-white dark:bg-gray-800 shadow-2xl rounded-lg p-8 w-full max-w-xl relative">
+          <button @click="showPopup = false" class="absolute top-3 right-3 text-gray-500 hover:text-gray-800 dark:hover:text-white text-xl">&times;</button>
           <h3 class="text-xl font-semibold mb-4 text-gray-800 dark:text-gray-100">New Leave Request</h3>
           <form @submit.prevent="addLeave" class="space-y-4">
             <input
@@ -63,12 +57,14 @@
               <option value="Approved">Approved</option>
               <option value="Denied">Denied</option>
             </select>
-            <button
-              type="submit"
-              class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition"
-            >
-              Submit Leave Request
-            </button>
+            <div class="flex justify-end">
+              <button
+                type="submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition"
+              >
+                Submit Leave Request
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -79,16 +75,16 @@
 <script>
 import LeaveTableView from '@/components/LeaveTableView.vue';
 
-
 export default {
-  components: { LeaveTableView},
+  components: { LeaveTableView },
   data() {
     return {
       leaves: [],
       filterStatus: 'All',
+      showPopup: false,
       newLeave: {
-        employee_id: null, 
-        date: '',         
+        employee_id: null,
+        date: '',
         reason: '',
         status: ''
       }
@@ -118,10 +114,10 @@ export default {
         }
         const data = await response.json();
         this.leaves = data.map(l => ({
-          id: l.leave_id, 
+          id: l.leave_id,
           employeeId: l.employee_id,
-          employeeName: `${l.first_name} ${l.last_name}`, 
-          date: l.leave_date, 
+          employeeName: `${l.first_name} ${l.last_name}`,
+          date: l.leave_date,
           reason: l.reason,
           status: l.status,
         }));
@@ -132,10 +128,9 @@ export default {
 
     async addLeave() {
       try {
-        
         const payload = {
           employee_id: this.newLeave.employee_id,
-          leave_date: this.newLeave.date, 
+          leave_date: this.newLeave.date,
           reason: this.newLeave.reason,
           status: this.newLeave.status,
         };
@@ -155,7 +150,8 @@ export default {
         }
 
         await this.fetchLeaves();
-        this.resetForm(); 
+        this.resetForm();
+        this.showPopup = false;
       } catch (error) {
         console.error('Error adding leave request:', error);
       }
@@ -178,11 +174,9 @@ export default {
           throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
         }
 
-        
         await this.fetchLeaves();
       } catch (error) {
         console.error('Error deleting leave request:', error);
-   
       }
     },
 

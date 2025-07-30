@@ -42,12 +42,11 @@
       <CardComp v-if="employees.length" class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6 flex items-center justify-between">
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Total Payroll (ZAR)</p>
-          <p class="text-3xl font-semibold text-gray-900 dark:text-white">R {{ totalPayroll }}</p>
+          <p class="text-3xl font-semibold text-gray-900 dark:text-white">R{{ totalPayroll }}</p>
         </div>
-        <span class="text-purple-500 text-2xl">💰</span>
+        <span class="text-purple-500 text-2xl"></span>
       </CardComp>
     </div>
-
     <!-- Quick Actions -->
     <div class="flex flex-wrap gap-4 my-6">
       <router-link
@@ -67,9 +66,9 @@
     <!-- Charts & Attendance Table -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Performance Line Chart -->
-      <CardComp class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md">
+      <CardComp class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-md lg:col-span-2">
         <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Performance Chart</h3>
-        <canvas ref="chartRef" class="w-full h-64"></canvas>
+        <canvas ref="chartRef" class="w-full h-[28rem]"></canvas>
       </CardComp>
 
       <!-- Recent Attendance Table -->
@@ -138,7 +137,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import CardComp from '@/components/CardComp.vue';
 import { Chart, registerables } from 'chart.js';
@@ -309,5 +307,4 @@ export default {
 </script>
 
 <style scoped>
-/* Add any component-specific styles here */
 </style>
