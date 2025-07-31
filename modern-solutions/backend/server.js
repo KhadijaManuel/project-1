@@ -3,14 +3,12 @@ const cors = require('cors');
 require('dotenv').config(); // Loads environment variables from a .env file
 
 // Modular route files and authentication middleware
-const authMiddleware = require('./middleware/authMiddleware'); // Make sure this path is correct
-const employeeRoutes = require('./routes/employeeRoutes');
+const employeeRoutes = require('./routes/employeeRoutes'); // Make sure this path is correct
 const authRoutes = require('./routes/authRoutes');
 const payrollRoutes = require('./routes/payrollRoutes');
-const leaveRoutes = require('./routes/leaveRoutes'); // Make sure this path is correct
+const leaveRoutes = require('./routes/leaveRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');
 const performanceRoutes = require('./routes/performanceRoutes');
-
 
 const app = express();
 app.use(cors());             // Enable CORS for cross-origin requests from your frontend

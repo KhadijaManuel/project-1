@@ -100,7 +100,7 @@ exports.updateEmployee = async (req, res) => {
   }
 };
 
-// selete employee by ID
+// delete employee by ID
 exports.deleteEmployee = async (req, res) => {
   const { id } = req.params;
 

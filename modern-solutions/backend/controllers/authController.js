@@ -1,9 +1,9 @@
-// controllers/authController.js
+// File: controllers/authController.js
 const db = require('../models/db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-
+// Register new user (employee or HR)
 exports.registerUser = async (req, res) => {
   const { username, password, employee_id } = req.body;
 
@@ -12,30 +12,25 @@ exports.registerUser = async (req, res) => {
   }
 
   try {
-    // Check if username already exists
     const [existing] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
     if (existing.length > 0) {
       return res.status(409).json({ message: 'Username already taken' });
     }
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Insert new user
+    const hashedPassword = await bcrypt.hash(password, 10);
     await db.query(
       'INSERT INTO users (username, password_hash, employee_id) VALUES (?, ?, ?)',
       [username, hashedPassword, employee_id]
     );
 
-    res.status(201).json({ message: ' User registered successfully' });
+    res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
     console.error('Registration Error:', err);
     res.status(500).json({ message: 'Registration failed', error: err.sqlMessage });
   }
 };
 
-
+// Login user
 exports.loginUser = async (req, res) => {
   const { username, password } = req.body;
 
@@ -44,21 +39,17 @@ exports.loginUser = async (req, res) => {
   }
 
   try {
-    // Find user by username
     const [rows] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
     if (rows.length === 0) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
     const user = rows[0];
-
-    // Compare password
     const isMatch = await bcrypt.compare(password, user.password_hash);
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    // Generate JWT
     const token = jwt.sign(
       {
         user_id: user.user_id,
@@ -66,7 +57,7 @@ exports.loginUser = async (req, res) => {
         username: user.username,
       },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' } // token valid for 1 hour
+      { expiresIn: '1h' }
     );
 
     res.status(200).json({
@@ -84,18 +75,15 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-//DELETE a user by user_id
-
+// Delete user
 exports.deleteUser = async (req, res) => {
   const { user_id } = req.params;
 
   try {
     const [result] = await db.query('DELETE FROM users WHERE user_id = ?', [user_id]);
-
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: 'User not found' });
     }
-
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (err) {
     console.error('Delete User Error:', err);
@@ -103,7 +91,7 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-//UPDATE user details
+// Update user
 exports.updateUser = async (req, res) => {
   const { user_id } = req.params;
   const { username, password, employee_id } = req.body;
@@ -122,8 +110,7 @@ exports.updateUser = async (req, res) => {
     }
 
     if (password) {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
+      const hashedPassword = await bcrypt.hash(password, 10);
       fields.push('password_hash = ?');
       values.push(hashedPassword);
     }
@@ -134,7 +121,6 @@ exports.updateUser = async (req, res) => {
     }
 
     values.push(user_id);
-
     const sql = `UPDATE users SET ${fields.join(', ')} WHERE user_id = ?`;
     const [result] = await db.query(sql, values);
 
@@ -148,4 +134,3 @@ exports.updateUser = async (req, res) => {
     res.status(500).json({ message: 'Failed to update user', error: err.sqlMessage });
   }
 };
-
