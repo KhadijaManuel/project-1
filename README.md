@@ -24,10 +24,10 @@ Run frontend: `npm run serve`
 - add and remove employees data from 1 single application 
 
 ## dev-dependancys 
--nodemon 
--bcrypt
--mySQL2
--cors 
--dotenv
--express
+- nodemon 
+- bcrypt
+- mySQL2
+- cors 
+- dotenv
+- express
 
