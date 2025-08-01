@@ -11,7 +11,6 @@ const {
 } = require('../controllers/leaveController');
 
 
-// const authenticateToken = require('../middleware/authMiddleware');
 
 // Define routes for leave management
 router.get('/', getAllLeaveRequests);             // GET all leave requests

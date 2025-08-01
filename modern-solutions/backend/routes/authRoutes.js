@@ -9,9 +9,9 @@ router.post('/register', registerUser);
 
 // Login user
 router.post('/login', loginUser);
-
+// delete user 
 router.delete('/:user_id', deleteUser);
-
+// update user 
 router.put('/:user_id', updateUser);
 
 module.exports = router;

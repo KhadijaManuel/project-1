@@ -242,6 +242,7 @@ INSERT INTO performance_reviews (employee_id, employee_name, review_period, revi
 (10, 'Fatima Patel', '2024 Q4', 'Karabo Dlamini', 9, 'Excellent customer support leadership and problem-solving.');
 
 -- TRIGGER to auto-insert into payroll and attendance for new employees
+-- make the database update the tables that will be used 
 DELIMITER //
 CREATE TRIGGER trg_add_payroll_attendance
 AFTER INSERT ON employees

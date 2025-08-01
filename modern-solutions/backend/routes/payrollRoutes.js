@@ -4,6 +4,7 @@ const router = express.Router();
 const { getAllPayroll, addPayroll, getPayrollByEmployee, updatePayroll, deletePayroll } = require('../controllers/payrollController');
 const authenticateToken = require('../middleware/authMiddleware');
 // Protect this route
+// did not do that as i was geting errors 
 
 router.get('/', getAllPayroll);// GET all data from the database 
 

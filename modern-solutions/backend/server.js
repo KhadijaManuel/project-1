@@ -14,7 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Prefix with /api
+// Prefix with /api
 app.use('/employees', employeeRoutes);
 app.use('/reviews', performanceRoutes);
 app.use('/auth', authRoutes);

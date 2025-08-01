@@ -1,4 +1,3 @@
-// middleware/roleMiddleware.js
 const jwt = require('jsonwebtoken');
 
 exports.authorizeRoles = (...allowedRoles) => {
