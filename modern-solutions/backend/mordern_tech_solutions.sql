@@ -36,6 +36,9 @@ CREATE TABLE users (
     ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+ALTER TABLE users ADD COLUMN role ENUM('employee', 'hr') DEFAULT 'employee';
+
+
 -- Payroll table
 CREATE TABLE payroll (
   payroll_id INT AUTO_INCREMENT PRIMARY KEY,
