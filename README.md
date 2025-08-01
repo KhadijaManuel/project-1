@@ -22,3 +22,12 @@ Run frontend: `npm run serve`
 - Export data as CSV/PDF(payslips and attendance)
 - Fully responsive UI
 - add and remove employees data from 1 single application 
+
+## dev-dependancys 
+-nodemon 
+-bcrypt
+-mySQL2
+-cors 
+-dotenv
+-express
+
