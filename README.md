@@ -23,7 +23,8 @@ Run frontend: `npm run serve`
 - Fully responsive UI
 - add and remove employees data from 1 single application 
 
-## dev-dependancys 
+## dev-dependancys that must be installed before you run the scripts 
+`npm run setup`
 - nodemon 
 - bcrypt
 - mySQL2
